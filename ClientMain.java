@@ -1,10 +1,17 @@
 package assignment7;
 
+import javafx.stage.Stage;
+
 public class ClientMain {
 
 	public static void main(String[] args) {
-		// TODO Auto-generated method stub
-
+		Client client = new Client();
+		new Thread(new Runnable () {
+			@Override
+			public void run() {
+				client.runMe();
+			}
+		}).start();
 	}
 
 }
