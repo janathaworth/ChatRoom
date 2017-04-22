@@ -4,10 +4,15 @@ import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.net.Socket;
+
+import assignment5.Critter;
 import javafx.application.Application;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextArea;
@@ -15,16 +20,20 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 
-public class Client extends Application{
+public class Client extends Application {
 	int port = 4242;
 	// IO streams
 	DataOutputStream toServer = null;
 	DataInputStream fromServer = null;
 	
+	public void runMe(){
+		Stage stage1 = new Stage();
+		start(stage1);
+	}
 	@Override // Override the start method in the Application class
 	public void start(Stage primaryStage) {
-	// Panel p to hold the label and text field
-	//Create UI
+		// Panel p to hold the label and text field
+		// Create UI
 		BorderPane pane1 = new BorderPane();
 		pane1.setPadding(new Insets(5, 5, 5, 5));
 		pane1.setStyle("-fx-border-color: green");
@@ -42,25 +51,41 @@ public class Client extends Application{
 		primaryStage.setTitle("Client A"); // Set the stage title
 		primaryStage.setScene(scene); // Place the scene in the stage
 		primaryStage.show(); // Display the stage
-		//handle action event
+		// handle action event
 		tf.setOnAction(e -> {
-			try{
-				//get the message from the text field
+			try {
+				// get the message from the text field
 				String message = tf.getText();
-				//send the message to the server
+				// send the message to the server
 				toServer.writeChars(message);
 				toServer.flush();
-				//read message: get the message from the server
+				// read message: get the message from the server
 				@SuppressWarnings("deprecation")
 				String remssg = fromServer.readLine();
-				//display to the text area
+				// display to the text area
 				ta.appendText("Mssg received from the server is: " + remssg + "\n");
-			}
-			catch(IOException ex){
+			} catch (IOException ex) {
 				System.err.println(ex);
 			}
 		});
-
+		Button sendBt = new Button("SET");
+		sendBt.setOnAction(e -> {
+			try {
+				// get the message from the text field
+				String message = tf.getText();
+				// send the message to the server
+				toServer.writeChars(message);
+				toServer.flush();
+				// read message: get the message from the server
+				@SuppressWarnings("deprecation")
+				String remssg = fromServer.readLine();
+				// display to the text area
+				ta.appendText("Mssg received from the server is: " + remssg + "\n");
+			} catch (IOException ex) {
+				System.err.println(ex);
+			}
+		});
+		mainPane.getChildren().addAll(new Label("Client A "), tf, sendBt);
 		// lisa's code: ChatClient.java - day21network/observer
 		try {
 			// request connection: create a socket to connect to the server
