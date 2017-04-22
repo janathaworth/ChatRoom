@@ -5,11 +5,7 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 import java.net.Socket;
 
-import assignment5.Critter;
 import javafx.application.Application;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
-import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -18,6 +14,7 @@ import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.FlowPane;
 import javafx.stage.Stage;
 
 public class Client extends Application {
@@ -27,20 +24,17 @@ public class Client extends Application {
 	DataInputStream fromServer = null;
 	
 	public void runMe(){
-		Stage stage1 = new Stage();
-		start(stage1);
+		launch();
 	}
 	@Override // Override the start method in the Application class
 	public void start(Stage primaryStage) {
 		// Panel p to hold the label and text field
 		// Create UI
-		BorderPane pane1 = new BorderPane();
-		pane1.setPadding(new Insets(5, 5, 5, 5));
+		FlowPane pane1 = new FlowPane();
+		pane1.setHgap(4);
 		pane1.setStyle("-fx-border-color: green");
-		pane1.setLeft(new Label("Enter a message: "));
 		TextField tf = new TextField();
 		tf.setAlignment(Pos.BOTTOM_RIGHT);
-		pane1.setCenter(tf);
 		BorderPane mainPane = new BorderPane();
 		// Text area to display contents
 		TextArea ta = new TextArea();
@@ -68,7 +62,7 @@ public class Client extends Application {
 				System.err.println(ex);
 			}
 		});
-		Button sendBt = new Button("SET");
+		Button sendBt = new Button("Send");
 		sendBt.setOnAction(e -> {
 			try {
 				// get the message from the text field
@@ -85,7 +79,7 @@ public class Client extends Application {
 				System.err.println(ex);
 			}
 		});
-		mainPane.getChildren().addAll(new Label("Client A "), tf, sendBt);
+		pane1.getChildren().addAll(new Label("Enter a message: "), tf, sendBt);
 		// lisa's code: ChatClient.java - day21network/observer
 		try {
 			// request connection: create a socket to connect to the server

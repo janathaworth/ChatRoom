@@ -1,7 +1,5 @@
 package assignment7;
 
-import javafx.stage.Stage;
-
 public class ClientMain {
 
 	public static void main(String[] args) {
