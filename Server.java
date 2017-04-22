@@ -5,20 +5,13 @@ import java.net.ServerSocket;
 import java.net.Socket;
 
 public class Server {
-	public void setUp() {
-		try {
-			ServerSocket serverSock = new ServerSocket(4242);
-			while(true) {
-				Socket clientSocket = serverSock.accept();
-				Thread t = new Thread(new ClientHandler(clientSocket));
-				t.start();
-				System.out.println("got a connection");
-			 }
-		}
-		
-		catch (IOException e) {
-			e.printStackTrace(); 
-		}
+	public void setUp() throws IOException{
+		ServerSocket serverSocket = new ServerSocket(4242);
+		while(true) {
+			Socket clientSocket = serverSocket.accept();
+			Thread t = new Thread(new ClientHandler(clientSocket));
+			t.start();
+		 }
 	}
 
 }
