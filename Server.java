@@ -13,6 +13,8 @@ public class Server extends Observable {
 		ServerSocket serverSocket = new ServerSocket(4242);
 		while(true) {
 			Socket clientSocket = serverSocket.accept();
+			ClientObserver client = new ClientObserver(clientSocket.getOutputStream());
+			addObserver(client);
 			Thread t = new Thread(new ClientHandler(clientSocket));
 			t.start();
 		 }
