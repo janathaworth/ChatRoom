@@ -1,15 +1,32 @@
 package assignment7;
 
-public class ClientMain {
+import javafx.application.Application;
+import javafx.scene.Scene;
+import javafx.scene.control.Button;
+import javafx.scene.control.TextField;
+import javafx.scene.layout.FlowPane;
+import javafx.stage.Stage;
+
+public class ClientMain extends Application {
 
 	public static void main(String[] args) {
-		Client client = new Client();
-		new Thread(new Runnable () {
-			@Override
-			public void run() {
-				client.runMe();
-			}
-		}).start();
+		launch();
+	}
+
+	@Override
+	public void start(Stage primaryStage) throws Exception {
+		FlowPane pane = new FlowPane(); 
+		TextField name = new TextField();
+		Button register = new Button("Register");
+		pane.getChildren().addAll(name, register);
+		Scene scene = new Scene(pane);
+		primaryStage.setScene(scene);
+		
+		register.setOnAction( e -> {
+			Client client = new Client(name.getText());
+		});
+		
+		primaryStage.show();
 	}
 
 }

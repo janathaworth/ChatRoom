@@ -21,7 +21,7 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.FlowPane;
 import javafx.stage.Stage;
 
-public class Client extends Application {
+public class Client  {
 	int port = 4242;
 	// IO streams
 //	DataOutputStream toServer = null;
@@ -31,8 +31,18 @@ public class Client extends Application {
 	private PrintWriter writer;
 	TextArea ta;
 	
-	public void runMe(){
-		launch();
+//	public void runMe(){
+//		launch();
+//	}
+	
+	public Client(String name) {
+		Stage s = new Stage(); 
+		Scene scene = getScene(); 
+		s.setTitle(name); // Set the stage title
+		s.setScene(scene); // Place the scene in the stage
+		s.show(); // Display the stage
+		
+		
 	}
 	
 	public Scene getScene() {
@@ -99,41 +109,41 @@ public class Client extends Application {
 	public void newCustomer() {
 		
 	}
-	@Override // Override the start method in the Application class
-	public void start(Stage primaryStage) {
-		
-	
-		// Create a scene and place it in the stage
-		
-		Scene scene = getScene(); 
-		primaryStage.setTitle("Client A"); // Set the stage title
-		primaryStage.setScene(scene); // Place the scene in the stage
-		primaryStage.show(); // Display the stage
-		
-		Stage secondaryStage = new Stage(); 
-		secondaryStage.setTitle("Client B");
-		secondaryStage.setScene(getScene());
-		secondaryStage.show(); 
-		
-		
-//		// lisa's code: ChatClient.java - day21network/observer
-//		try {
-//			// request connection: create a socket to connect to the server
-//			@SuppressWarnings("resource")
+//	@Override // Override the start method in the Application class
+//	public void start(Stage primaryStage) {
+//		
 //	
-//			
-//		} catch (IOException ex) {
-//			//ta.appendText(ex.toString() + "\n");
-//			/*
-//			 * lisa: InputStreamReader streamReader = new
-//			 * InputStreamReader(sock.getInputStream()); reader = new
-//			 * BufferedReader(streamReader); writer = new
-//			 * PrintWriter(sock.getOutputStream()); System.out.println(
-//			 * "networking established"); Thread readerThread = new Thread(new
-//			 * IncomingReader()); readerThread.start();
-//			 */
-//		}
-	}
+//		// Create a scene and place it in the stage
+//		
+//		Scene scene = getScene(); 
+//		primaryStage.setTitle("Client A"); // Set the stage title
+//		primaryStage.setScene(scene); // Place the scene in the stage
+//		primaryStage.show(); // Display the stage
+//		
+//		Stage secondaryStage = new Stage(); 
+//		secondaryStage.setTitle("Client B");
+//		secondaryStage.setScene(getScene());
+//		secondaryStage.show(); 
+//		
+//		
+////		// lisa's code: ChatClient.java - day21network/observer
+////		try {
+////			// request connection: create a socket to connect to the server
+////			@SuppressWarnings("resource")
+////	
+////			
+////		} catch (IOException ex) {
+////			//ta.appendText(ex.toString() + "\n");
+////			/*
+////			 * lisa: InputStreamReader streamReader = new
+////			 * InputStreamReader(sock.getInputStream()); reader = new
+////			 * BufferedReader(streamReader); writer = new
+////			 * PrintWriter(sock.getOutputStream()); System.out.println(
+////			 * "networking established"); Thread readerThread = new Thread(new
+////			 * IncomingReader()); readerThread.start();
+////			 */
+////		}
+//	}
 	
 	class IncomingReader implements Runnable {
 		public void run() { 
