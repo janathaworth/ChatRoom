@@ -5,10 +5,12 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Observable;
 
 public class Server extends Observable {
-
+    public static Map<String, String> names = new HashMap<String, String>();
 	public void setUp() throws IOException{
 		ServerSocket serverSocket = new ServerSocket(4242);
 		while(true) {

@@ -1,15 +1,10 @@
 package assignment7;
 
 import java.io.BufferedReader;
-import java.io.DataInputStream;
-import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
-import java.net.UnknownHostException;
-
-import javafx.application.Application;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -17,7 +12,6 @@ import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
-import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
@@ -39,8 +33,6 @@ public class Client  {
 		s.setTitle(name); // Set the stage title
 		s.setScene(scene); // Place the scene in the stage
 		s.show(); // Display the stage
-		
-		
 	}
 	
 	public Scene getScene() {
@@ -56,15 +48,13 @@ public class Client  {
 		ta = new TextArea();
 		ta.setEditable(false);
 		v.getChildren().addAll(new ScrollPane(ta), pane1);
-		
 		VBox online = new VBox(); 
-		for (String name : ClientMain.names.keySet()) {
+		for (String name : Server.names.keySet()) {
 			Button button = new Button(name);
 			button.setStyle("-fx-background-color: transparent;");
 			online.getChildren().add(button);
 		}
 		pane.getChildren().addAll(online, v);
-		
 		// handle action event
 		tf.setOnAction(e -> {
 			// get the message from the text field
@@ -74,7 +64,6 @@ public class Client  {
 			writer.println(name + ": " + message);
 			writer.flush();
 		});
-				
 		Button sendBt = new Button("Send");
 		sendBt.setOnAction(e -> {
 			// get the message from the text field
@@ -83,9 +72,7 @@ public class Client  {
 			writer.println(name + ": " +  message);
 			//System.out.println(message);
 			writer.flush(); 
-
 		});
-				
 		pane1.getChildren().addAll(new Label("Enter a message: "), tf, sendBt);
 		Socket sock;
 		try {
@@ -99,7 +86,6 @@ public class Client  {
 		catch (Exception e) {
 					e.printStackTrace(); 
 		}
-				
 		return new Scene(pane);
 	}
 		
