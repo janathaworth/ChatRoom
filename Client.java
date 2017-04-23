@@ -96,11 +96,10 @@ public class Client  {
 		public void run() { 
 			try {
 				String message = reader.readLine(); 
-				//while (message != null) {
+				while (message != null) {
 					ta.appendText(message + "\n");
-					//message = reader.readLine(); 
-				//}	
-				tf.clear();
+					message = reader.readLine(); 
+				}	
 			} 
 			catch (IOException ex) { ex.printStackTrace(); }
 			}

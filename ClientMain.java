@@ -24,7 +24,6 @@ public class ClientMain extends Application {
 		
 		register.setOnAction( e -> {
 			Client client = new Client(name.getText());
-			name.clear(); 
 		});
 		
 		primaryStage.show();
