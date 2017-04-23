@@ -26,8 +26,8 @@ public class Client extends Application {
 	public void runMe(){
 		launch();
 	}
-	@Override // Override the start method in the Application class
-	public void start(Stage primaryStage) {
+	
+	public Scene getScene() {
 		// Panel p to hold the label and text field
 		// Create UI
 		FlowPane pane1 = new FlowPane();
@@ -40,46 +40,62 @@ public class Client extends Application {
 		TextArea ta = new TextArea();
 		mainPane.setCenter(new ScrollPane(ta));
 		mainPane.setTop(pane1);
+		
+		// handle action event
+				tf.setOnAction(e -> {
+					try {
+						// get the message from the text field
+						String message = tf.getText();
+						// send the message to the server
+						toServer.writeChars(message);
+						toServer.flush();
+						// read message: get the message from the server
+						@SuppressWarnings("deprecation")
+						String remssg = fromServer.readLine();
+						// display to the text area
+						ta.appendText("Mssg received from the server is: " + remssg + "\n");
+					} catch (IOException ex) {
+						System.err.println(ex);
+					}
+				});
+				Button sendBt = new Button("Send");
+				sendBt.setOnAction(e -> {
+					try {
+						// get the message from the text field
+						String message = tf.getText();
+						// send the message to the server
+						toServer.writeChars(message);
+						toServer.flush();
+						// read message: get the message from the server
+						@SuppressWarnings("deprecation")
+						String remssg = fromServer.readLine();
+						// display to the text area
+						ta.appendText("Mssg received from the server is: " + remssg + "\n");
+					} catch (IOException ex) {
+						System.err.println(ex);
+					}
+				});
+				
+				pane1.getChildren().addAll(new Label("Enter a message: "), tf, sendBt);
+		return new Scene(mainPane);
+	}
+	@Override // Override the start method in the Application class
+	public void start(Stage primaryStage) {
+		
+	
 		// Create a scene and place it in the stage
-		Scene scene = new Scene(mainPane, 450, 200);
+		
+		Scene scene = getScene(); 
 		primaryStage.setTitle("Client A"); // Set the stage title
 		primaryStage.setScene(scene); // Place the scene in the stage
 		primaryStage.show(); // Display the stage
-		// handle action event
-		tf.setOnAction(e -> {
-			try {
-				// get the message from the text field
-				String message = tf.getText();
-				// send the message to the server
-				toServer.writeChars(message);
-				toServer.flush();
-				// read message: get the message from the server
-				@SuppressWarnings("deprecation")
-				String remssg = fromServer.readLine();
-				// display to the text area
-				ta.appendText("Mssg received from the server is: " + remssg + "\n");
-			} catch (IOException ex) {
-				System.err.println(ex);
-			}
-		});
-		Button sendBt = new Button("Send");
-		sendBt.setOnAction(e -> {
-			try {
-				// get the message from the text field
-				String message = tf.getText();
-				// send the message to the server
-				toServer.writeChars(message);
-				toServer.flush();
-				// read message: get the message from the server
-				@SuppressWarnings("deprecation")
-				String remssg = fromServer.readLine();
-				// display to the text area
-				ta.appendText("Mssg received from the server is: " + remssg + "\n");
-			} catch (IOException ex) {
-				System.err.println(ex);
-			}
-		});
-		pane1.getChildren().addAll(new Label("Enter a message: "), tf, sendBt);
+		
+		Stage secondaryStage = new Stage(); 
+		secondaryStage.setTitle("Client B");
+		secondaryStage.setScene(getScene());
+		secondaryStage.show(); 
+		
+		
 		// lisa's code: ChatClient.java - day21network/observer
 		try {
 			// request connection: create a socket to connect to the server
@@ -90,7 +106,7 @@ public class Client extends Application {
 			fromServer = new DataInputStream(sock.getInputStream());
 			toServer = new DataOutputStream(sock.getOutputStream());
 		} catch (IOException ex) {
-			ta.appendText(ex.toString() + "\n");
+			//ta.appendText(ex.toString() + "\n");
 			/*
 			 * lisa: InputStreamReader streamReader = new
 			 * InputStreamReader(sock.getInputStream()); reader = new
