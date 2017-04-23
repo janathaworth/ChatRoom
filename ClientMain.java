@@ -10,6 +10,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Hyperlink;
 import javafx.scene.control.Label;
+import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.HBox;
@@ -29,7 +30,7 @@ public class ClientMain extends Application {
 		FlowPane user = new FlowPane();
 		FlowPane pass = new FlowPane(); 
 		TextField name = new TextField();
-		TextField pw = new TextField();
+		PasswordField pw = new PasswordField();
 		user.getChildren().addAll(new Label("Username: "), name);
 		pass.getChildren().addAll(new Label("Password:  "), pw );
 		user.setAlignment(Pos.CENTER);
