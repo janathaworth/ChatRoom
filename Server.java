@@ -38,11 +38,11 @@ public class Server extends Observable {
 			try {
 				String message = reader.readLine(); 
 				//System.out.println("recevied: " + message);
-				while (message != null) {
+				//while (message != null) {
 					setChanged();
 					notifyObservers(message);
-					message = reader.readLine(); 
-				}
+					//message = reader.readLine(); 
+				//}
 			}
 			catch (IOException e) {
 				e.printStackTrace(); 

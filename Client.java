@@ -27,7 +27,7 @@ public class Client  {
 	private BufferedReader reader; 
 	private PrintWriter writer;
 	TextArea ta;
-	
+	TextField  tf;
 
 	String name; 
 	
@@ -48,7 +48,7 @@ public class Client  {
 		FlowPane pane1 = new FlowPane();
 		pane1.setHgap(4);
 		pane1.setStyle("-fx-border-color: green");
-		TextField tf = new TextField();
+		tf = new TextField();
 		tf.setAlignment(Pos.BOTTOM_RIGHT);
 		BorderPane mainPane = new BorderPane();
 		// Text area to display contents
@@ -96,10 +96,11 @@ public class Client  {
 		public void run() { 
 			try {
 				String message = reader.readLine(); 
-				while (message != null) {
+				//while (message != null) {
 					ta.appendText(message + "\n");
-					message = reader.readLine(); 
-				}	
+					//message = reader.readLine(); 
+				//}	
+				tf.clear();
 			} 
 			catch (IOException ex) { ex.printStackTrace(); }
 			}
