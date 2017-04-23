@@ -19,6 +19,7 @@ import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.FlowPane;
+import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
 public class Client  {
@@ -45,16 +46,24 @@ public class Client  {
 	public Scene getScene() {
 		// Panel p to hold the label and text field
 		// Create UI
+		FlowPane pane = new FlowPane();
 		FlowPane pane1 = new FlowPane();
 		pane1.setHgap(4);
 		pane1.setStyle("-fx-border-color: green");
+		pane1.setAlignment(Pos.CENTER);
 		tf = new TextField();
-		tf.setAlignment(Pos.BOTTOM_RIGHT);
-		BorderPane mainPane = new BorderPane();
-		// Text area to display contents
+		VBox v = new VBox(); 
 		ta = new TextArea();
-		mainPane.setCenter(new ScrollPane(ta));
-		mainPane.setTop(pane1);
+		ta.setEditable(false);
+		v.getChildren().addAll(new ScrollPane(ta), pane1);
+		
+		VBox online = new VBox(); 
+		for (String name : ClientMain.names.keySet()) {
+			Button button = new Button(name);
+			button.setStyle("-fx-background-color: transparent;");
+			online.getChildren().add(button);
+		}
+		pane.getChildren().addAll(online, v);
 		
 		// handle action event
 		tf.setOnAction(e -> {
@@ -91,7 +100,7 @@ public class Client  {
 					e.printStackTrace(); 
 		}
 				
-		return new Scene(mainPane);
+		return new Scene(pane);
 	}
 		
 	class IncomingReader implements Runnable {
