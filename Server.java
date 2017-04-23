@@ -8,7 +8,7 @@ import java.net.Socket;
 import java.util.Observable;
 
 public class Server extends Observable {
-	
+
 	public void setUp() throws IOException{
 		ServerSocket serverSocket = new ServerSocket(4242);
 		while(true) {

@@ -31,9 +31,9 @@ public class Client  {
 
 	String name; 
 	
-	public Client(String name) {
+	public Client(String name, Stage s) {
 		this.name = name; 
-		Stage s = new Stage(); 
+		//Stage s = new Stage(); 
 		Scene scene = getScene(); 
 		s.setTitle(name); // Set the stage title
 		s.setScene(scene); // Place the scene in the stage
