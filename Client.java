@@ -60,6 +60,7 @@ public class Client  {
 				tf.setOnAction(e -> {
 					// get the message from the text field
 					String message = tf.getText();
+					tf.clear();
 					// send the message to the server
 					writer.println(name + ": " + message);
 					writer.flush();
@@ -69,6 +70,7 @@ public class Client  {
 				sendBt.setOnAction(e -> {
 					// get the message from the text field
 					String message = tf.getText();
+					tf.clear();
 					writer.println(name + ": " +  message);
 					//System.out.println(message);
 					writer.flush(); 
@@ -78,7 +80,7 @@ public class Client  {
 				pane1.getChildren().addAll(new Label("Enter a message: "), tf, sendBt);
 				Socket sock;
 				try {
-				sock = new Socket("127.0.0.1", 4242);
+				sock = new Socket("10.146.144.25", 4242);
 				writer = new PrintWriter(sock.getOutputStream());
 				InputStreamReader streamReader = new InputStreamReader(sock.getInputStream());
 				reader = new BufferedReader(streamReader);
