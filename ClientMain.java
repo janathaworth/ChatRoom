@@ -11,14 +11,16 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Hyperlink;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
+import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
 public class ClientMain extends Application {
-    private static Map<String, String> names = new HashMap<String, String>();
+    public static Map<String, String> names = new HashMap<String, String>();
     
 	public static void main(String[] args) {
 		launch();
@@ -42,19 +44,19 @@ public class ClientMain extends Application {
 		box.setAlignment(Pos.CENTER);
 		Scene scene = new Scene(box);
 		primaryStage.setScene(scene);
-		
+		Label incorrect = new Label();
 		login.setOnAction( e -> {
 			Client client = new Client(name.getText(), primaryStage);
-//			 if (name == null) {
-//                 return;
-//             }
-//             synchronized (names) {
-//                 if (!names.containsKey(name)) {
-//                	// String pw = "";
-//                     //names.put(name.getText(), pw);
-//                    // break;
-//                 }
-//             }
+             synchronized (names) {
+                 if (names.containsKey(name.getText())) {		//username exists
+                	 if(names.get(name.getText()) != pw.getText()) {	//password does not match
+                		 incorrect.setText("Your password is incorrect!");
+                         incorrect.setTextFill(Color.rgb(210, 39, 30));
+                         VBox iBox = new VBox(); 
+                         iBox.getChildren().add(incorrect);
+                	 }
+                 }
+             }
 			name.clear();
 		});
 		
