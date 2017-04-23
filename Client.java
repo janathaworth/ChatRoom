@@ -61,7 +61,7 @@ public class Client  {
 					// get the message from the text field
 					String message = tf.getText();
 					// send the message to the server
-					writer.println(message);
+					writer.println(name + ": " + message);
 					writer.flush();
 				});
 				
