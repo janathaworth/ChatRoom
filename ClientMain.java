@@ -39,7 +39,7 @@ public class ClientMain extends Application {
 //                    // break;
 //                 }
 //             }
-//			name.clear();
+			name.clear();
 		});
 		
 		primaryStage.show();

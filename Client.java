@@ -57,39 +57,39 @@ public class Client  {
 		mainPane.setTop(pane1);
 		
 		// handle action event
-				tf.setOnAction(e -> {
-					// get the message from the text field
-					String message = tf.getText();
-					tf.clear();
-					// send the message to the server
-					writer.println(name + ": " + message);
-					writer.flush();
-				});
+		tf.setOnAction(e -> {
+			// get the message from the text field
+			String message = tf.getText();
+			tf.clear();
+			// send the message to the server
+			writer.println(name + ": " + message);
+			writer.flush();
+		});
 				
-				Button sendBt = new Button("Send");
-				sendBt.setOnAction(e -> {
-					// get the message from the text field
-					String message = tf.getText();
-					tf.clear();
-					writer.println(name + ": " +  message);
-					//System.out.println(message);
-					writer.flush(); 
+		Button sendBt = new Button("Send");
+		sendBt.setOnAction(e -> {
+			// get the message from the text field
+			String message = tf.getText();
+			tf.clear();
+			writer.println(name + ": " +  message);
+			//System.out.println(message);
+			writer.flush(); 
 
-				});
+		});
 				
-				pane1.getChildren().addAll(new Label("Enter a message: "), tf, sendBt);
-				Socket sock;
-				try {
-				sock = new Socket("10.146.144.25", 4242);
-				writer = new PrintWriter(sock.getOutputStream());
-				InputStreamReader streamReader = new InputStreamReader(sock.getInputStream());
-				reader = new BufferedReader(streamReader);
-				Thread readerThread = new Thread(new IncomingReader()); 
-				readerThread.start();
-				}
-				catch (Exception e) {
+		pane1.getChildren().addAll(new Label("Enter a message: "), tf, sendBt);
+		Socket sock;
+		try {
+			sock = new Socket("10.146.144.25", 4242);
+			writer = new PrintWriter(sock.getOutputStream());
+			InputStreamReader streamReader = new InputStreamReader(sock.getInputStream());
+			reader = new BufferedReader(streamReader);
+			Thread readerThread = new Thread(new IncomingReader()); 
+			readerThread.start();
+			}
+		catch (Exception e) {
 					e.printStackTrace(); 
-				}
+		}
 				
 		return new Scene(mainPane);
 	}
