@@ -37,6 +37,7 @@ public class Server extends Observable {
 		public void run() {
 			try {
 				String message = reader.readLine(); 
+				System.out.println("recevied: " + message);
 				while (message != null) {
 					setChanged();
 					notifyObservers(message);
