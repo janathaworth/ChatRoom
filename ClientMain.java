@@ -1,5 +1,8 @@
 package assignment7;
 
+import java.io.BufferedWriter;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 import javafx.application.Application;
@@ -19,6 +22,7 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 
 public class ClientMain extends Application {
+	String fileName = "users.txt";
     
 	public static void main(String[] args) {
 		launch();
@@ -51,9 +55,9 @@ public class ClientMain extends Application {
 		
 		EventHandler log = new EventHandler<ActionEvent> () {
 			@Override public void handle(ActionEvent e) {
-				synchronized (Server.names) {
-	                 if (Server.names.containsKey(name.getText())) {			//username exists
-	                	 if(Server.names.get(name.getText()) != pw.getText()) {	//password does not match
+				//synchronized (Server.names) {
+	                 if (false) {			//username exists //Server.names.containsKey(name.getText())
+	                	 if(false) {	//password does not match //Server.names.get(name.getText() != pw.getText()
 	                		 incorrect.setText("Your password is incorrect!");
 	                         incorrect.setTextFill(Color.rgb(210, 39, 30));
 	                	 }
@@ -65,7 +69,6 @@ public class ClientMain extends Application {
 	                	 incorrect.setText("Incorrect Username!");
 	                	 incorrect.setTextFill(Color.rgb(210, 39, 30));
 	                 }
-	             }
 	             
 				name.clear();
 				pw.clear(); 
@@ -106,13 +109,14 @@ public class ClientMain extends Application {
 			
 			EventHandler click = new EventHandler<ActionEvent> () {
 				@Override public void handle(ActionEvent e) {
-					synchronized (Server.names) {
-		                 if (Server.names.containsKey(name2.getText())) {			
+					//synchronized (Server.names) {
+		                // if (Server.names.containsKey(name2.getText())) {		
+						if (false) { // CHANGE LATER PLSSSSSS
 		                		incorrect2.setText("Username already taken!");
 		                        incorrect2.setTextFill(Color.rgb(210, 39, 30));
 		                 }
-		                 else if (name2.getText().equals("")) {
-		                	 incorrect2.setText("Please enter a username");
+		                 else if (name2.getText().equals("") || name2.getText().contains(" ")) {
+		                	 incorrect2.setText("Invalid Username");
 	                         incorrect2.setTextFill(Color.rgb(210, 39, 30));
 		                 }
 		                 else if (pw2.getText().equals("")) {
@@ -124,10 +128,11 @@ public class ClientMain extends Application {
 	                         incorrect2.setTextFill(Color.rgb(210, 39, 30));
 		                 }
 		                 else{
-		                	 Server.names.put(name2.getText(), pw2.getText());	//add new user
 		                	 Client client = new Client(name2.getText(), primaryStage);
+		                	 client.writer.println("tparsemet" + name2.getText() + " " + pw2.getText() );
+		                	 client.writer.flush(); 
 		                 }
-		             }
+		            // }
 		             
 					name2.clear();
 					pw2.clear(); 

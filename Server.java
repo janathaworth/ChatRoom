@@ -1,16 +1,20 @@
 package assignment7;
 
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Observable;
 
 public class Server extends Observable {
-    public static Map<String, String> names = new HashMap<String, String>();
+
 	public void setUp() throws IOException{
 		ServerSocket serverSocket = new ServerSocket(4242);
 		while(true) {
@@ -20,6 +24,41 @@ public class Server extends Observable {
 			Thread t = new Thread(new ClientHandler(clientSocket));
 			t.start();
 		 }
+	}
+	
+	public void newClient(String user) {
+		String fileName = "users.txt";
+		try {
+	        FileWriter fileWriter = new FileWriter(fileName, true);
+	        String[] info = user.split(" ");
+	      fileWriter.write(info[0] + " " + info[1] + "\n");
+	       fileWriter.close();
+	    }
+	    catch(IOException ex) {
+	   	 ex.printStackTrace();
+	    }
+	}
+	
+	public static ArrayList<String> getUsers() {
+		ArrayList<String> users = new ArrayList<String>(); 
+		String fileName = "users.txt";
+		String line = null; 
+		try {
+            FileReader fileReader = new FileReader(fileName);
+            BufferedReader bufferedReader =  new BufferedReader(fileReader);
+            
+            while((line = bufferedReader.readLine()) != null) {
+            	System.out.println("line " + line);
+            	String[] split = line.split(" ");
+                users.add(split[0]);
+            }   
+            bufferedReader.close();         
+        }
+        catch(Exception e){
+           	e.printStackTrace();
+        }
+		System.out.println(users);
+		return users; 
 	}
 	
 	class ClientHandler implements Runnable {
@@ -41,6 +80,10 @@ public class Server extends Observable {
 				String message = reader.readLine(); 
 				//System.out.println("recevied: " + message);
 				while (message != null) {
+					if (message.contains("tparsemet")) {
+						newClient(message.substring(9)); 
+						message = message.split(" ")[0];
+					}
 					setChanged();
 					notifyObservers(message);
 					message = reader.readLine(); 
