@@ -2,16 +2,23 @@ package assignment7;
 
 import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
+import java.net.URL;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.EventHandler;
+import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.ContentDisplay;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.control.Menu;
@@ -19,12 +26,20 @@ import javafx.scene.control.MenuBar;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
+import javafx.scene.effect.DropShadow;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.image.PixelReader;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.VBox;
+import javafx.scene.media.AudioClip;
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
+import javafx.scene.text.TextFlow;
 import javafx.stage.Stage;
+import junit.framework.Test;
 
 public class Client  {
 	int port = 4242;
@@ -39,7 +54,7 @@ public class Client  {
 	
 	public Client(String name, Stage s) {
 		this.name = name; 
-		s = new Stage(); 
+		//s = new Stage(); 
 		Scene scene = getScene(); 
 		s.setTitle(name); // Set the stage title
 		s.setScene(scene); // Place the scene in the stage
@@ -96,27 +111,81 @@ public class Client  {
 			writer.println(name + ": " + message);
 			writer.flush();
 		});
+//		ImageView cry = new ImageView(
+//			      new Image("http://allenage.com/wp-content/uploads/2016/03/crying-emoji.jpg?15b286")
+//		);
+		ImageView smileImage = new ImageView(
+			      new Image("http://clipart-library.com/images/6Tyoad7Rc.jpg")
+		);
+		smileImage.setFitWidth(40);
+		smileImage.setPreserveRatio(true);
+		smileImage.setSmooth(true);
+		Button emojiBt = new Button("" , smileImage);
+		//emojiBt.setContentDisplay(ContentDisplay.TOP);
+		emojiBt.setOnAction(e -> {
+			writer.println(smileImage);
+			writer.flush(); 
+		});
+		emojiBt.setStyle("-fx-background-color: transparent;");	//gray shades: http://www.computerhope.com/cgi-bin/htmlcolor.pl?c=C0C0C0
+		
+		DropShadow shadow = new DropShadow();
+		//Adding the shadow when the mouse cursor is on
+		emojiBt.addEventHandler(MouseEvent.MOUSE_ENTERED, 
+		    new EventHandler<MouseEvent>() {
+		        @Override public void handle(MouseEvent e) {
+		            emojiBt.setEffect(shadow);
+		        }
+		});
+		//Removing the shadow when the mouse cursor is off
+		emojiBt.addEventHandler(MouseEvent.MOUSE_EXITED, 
+		    new EventHandler<MouseEvent>() {
+		        @Override public void handle(MouseEvent e) {
+		            emojiBt.setEffect(null);
+		        }
+		});
+		
 		Button sendBt = new Button("Send");
 		sendBt.setStyle("-fx-background-color: #55ffff");
 		sendBt.setOnAction(e -> {
+			//SOUND
+//			AudioClip aud = new AudioClip(
+//					"https://www.soundjay.com/button/sounds/button-09.mp3");
+//		     aud.play();
+//			 aud.stop();
 			// get the message from the text field
 			String message = tf.getText();
 			tf.clear();
-			writer.println(name + ": " +  message);
-			//System.out.println(message);
+			String timeStamp = new SimpleDateFormat("HH:mm:ss").format(Calendar.getInstance().getTime());
+			writer.println(name + ": " + message);
+			writer.println("                                       " + timeStamp);
 			writer.flush(); 
 		});
 		
+		DropShadow sendShadow = new DropShadow();
+		//Adding the shadow when the mouse cursor is on
+		sendBt.addEventHandler(MouseEvent.MOUSE_ENTERED, 
+		    new EventHandler<MouseEvent>() {
+		        @Override public void handle(MouseEvent e) {
+		        	sendBt.setEffect(shadow);
+		        }
+		});
+		//Removing the shadow when the mouse cursor is off
+		sendBt.addEventHandler(MouseEvent.MOUSE_EXITED, 
+		    new EventHandler<MouseEvent>() {
+		        @Override public void handle(MouseEvent e) {
+		        	sendBt.setEffect(null);
+		        }
+		});
 		
 		//String image = "http://allenage.com/wp-content/uploads/2016/03/crying-emoji.jpg?15b286"; 
-		//Button emoji = new Button();
-		//emoji.setGraphic(new ImageView(image));
-		pane1.getChildren().addAll(new Label("Enter a message: "), tf, sendBt);
+		pane1.getChildren().addAll(new Label("Enter a message: "), tf, emojiBt, sendBt);
+	    FlowPane.setMargin(emojiBt,new Insets(0));
+
 		v.getChildren().addAll(new ScrollPane(ta), pane1);
 		border.setRight(pane);
 		Socket sock;
 		try {
-			sock = new Socket("127.0.0.1", 4242);
+			sock = new Socket("10.145.6.225", 4242);
 			writer = new PrintWriter(sock.getOutputStream());
 			InputStreamReader streamReader = new InputStreamReader(sock.getInputStream());
 			reader = new BufferedReader(streamReader);
