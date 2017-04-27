@@ -8,6 +8,7 @@ import java.io.PrintWriter;
 import java.net.Socket;
 import java.net.URL;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 
 import javafx.application.Platform;
@@ -46,7 +47,7 @@ public class Client  {
 	
 	ListView<String> list;
 	private BufferedReader reader; 
-	private PrintWriter writer;
+	PrintWriter writer;
 	TextArea ta;
 	TextField  tf;
 
@@ -59,8 +60,8 @@ public class Client  {
 		s.setTitle(name); // Set the stage title
 		s.setScene(scene); // Place the scene in the stage
 		s.show(); // Display the stage
-		writer.println("tparsemet" + name);
-		writer.flush();
+//		writer.println("tparsemet" + name);
+//		writer.flush();
 	}
 	
 	public Scene getScene() {
@@ -82,25 +83,21 @@ public class Client  {
 		clients.setPrefColumnCount(14);
 		//ScrollPane online = new ScrollPane(clients);
 		
-		MenuBar menuBar = new MenuBar(); 
-		ScrollPane online = new ScrollPane();
+//		MenuBar menuBar = new MenuBar(); 
+//		ScrollPane online = new ScrollPane();
 		
 		 list = new ListView<>();
 
 		ObservableList<String> items = FXCollections.observableArrayList();
 		items.add("Online Users:");
-		for (String name : Server.names.keySet()) {
+		ArrayList<String> users = Server.getUsers(); 
+		for (String name : users) {
 			if (!name.equals(this.name)){
 				items.add(name);
-				Menu menu1 = new Menu(name);
-				menuBar.getMenus().add(menu1);
-				clients.appendText(name + " is online\n");
 			}
 		}
 		list.setItems(items);
-		online.setContent(menuBar);
 		border.setLeft(list);
-		//border.setBottom(pane1);
 		pane.getChildren().add( v);
 		// handle action event
 		tf.setOnAction(e -> {
