@@ -126,8 +126,12 @@ public class Client  {
 	        @Override public void handle(MouseEvent e) {
 	        	String thisClick = list.getSelectionModel().getSelectedItem();
 	        	//if (lastClick == null || !lastClick.equals(thisClick)) {
-	        	if (thisClick != null)
+	        	if (thisClick != null) {
+	        		writer.println("update:" + name + ":" + thisClick );
+	        		writer.flush(); 
 	        		writer.print( thisClick + "ttt");
+	        	}
+	        		
 	        	//}
 	        }
 		});
@@ -223,7 +227,6 @@ public class Client  {
 		String sender = ""; 
 		public void run() { 
 			try {
-				
 				message = reader.readLine(); 
 				String check = "tparsemet" + name;
 				while (message != null) {
@@ -242,7 +245,7 @@ public class Client  {
 						}
 						
 						else if (message.contains("ttt")) {
-							System.out.println(message);
+							//System.out.println(message);
 							String[] parts = message.split("ttt");
 							int i = 1; 
 							while (parts[i - 1].equals(parts[i])) {
@@ -253,7 +256,20 @@ public class Client  {
 							if (name.equals(receiver) || name.equals(sender) ) {
 								ta.appendText(parts[i] + "\n");
 							}
-							System.out.println(Arrays.toString(parts));
+							//System.out.println(Arrays.toString(parts));
+						}
+						else if (message.contains("update")) {
+							String[] incoming = message.split(":");
+							System.out.println(Arrays.toString(incoming));
+							System.out.println("length is " + incoming.length);
+							String sent = incoming[1];
+							String to = incoming[2];
+							if (incoming.length <= 3 && name.equals(sent)) {
+								ta.setText("");
+							}
+							else if (name.equals(sent)) {
+								ta.setText(incoming[3]);
+							}
 						}
 						else {
 							//System.out.println(receiver);
@@ -265,7 +281,8 @@ public class Client  {
 					}
 					message = reader.readLine(); 
 				}
-			} 
+				System.out.println(message);
+				} 
 			catch (IOException ex) { ex.printStackTrace(); }
 			}
 	}

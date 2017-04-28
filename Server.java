@@ -2,6 +2,7 @@ package assignment7;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
@@ -50,29 +51,31 @@ public class Server extends Observable {
 	    }
 	}
 	
-	public static ArrayList<String> getUsers() {
 
-		ArrayList<String> users = new ArrayList<String>(); 
-		String fileName = "users.txt";
-		String line = null; 
-		try {
-            FileReader fileReader = new FileReader(fileName);
-            BufferedReader bufferedReader =  new BufferedReader(fileReader);
-            
-            while((line = bufferedReader.readLine()) != null) {
-            	System.out.println("line " + line);
-            	String[] split = line.split(" ");
-                users.add(split[0]);
-            }   
-            bufferedReader.close();         
-        }
-        catch(Exception e){
-           	e.printStackTrace();
-        }
-		System.out.println(users);
-		return users; 
-	}
 	
+//	public static ArrayList<String> getUsers() {
+//
+//		ArrayList<String> users = new ArrayList<String>(); 
+//		String fileName = "users.txt";
+//		String line = null; 
+//		try {
+//            FileReader fileReader = new FileReader(fileName);
+//            BufferedReader bufferedReader =  new BufferedReader(fileReader);
+//            
+//            while((line = bufferedReader.readLine()) != null) {
+//            	System.out.println("line " + line);
+//            	String[] split = line.split(" ");
+//                users.add(split[0]);
+//            }   
+//            bufferedReader.close();         
+//        }
+//        catch(Exception e){
+//           	e.printStackTrace();
+//        }
+//		System.out.println(users);
+//		return users; 
+//	}
+//	
 	class ClientHandler implements Runnable {
 		BufferedReader reader; 
 
@@ -109,6 +112,25 @@ public class Server extends Observable {
 				        catch(Exception e){
 				           	e.printStackTrace();
 				        }
+					}
+					else if (message.contains("update")) {
+						String request = message.split(":")[2];
+						String sender = message.split(":")[1];
+						String fileName = request + ".txt";
+						String line = null; 
+						String convo = ""; 
+						FileReader fileReader; 
+						File f = new File(fileName);
+						f.createNewFile(); 
+						fileReader = new FileReader(fileName);
+						
+						BufferedReader bufferedReader =  new BufferedReader(fileReader);
+						while((line = bufferedReader.readLine()) != null) {
+			            	convo.concat(line);
+			            }   
+						setChanged();
+		                notifyObservers("update:" + sender + ":" + request + ":" +  convo);
+						
 					}
 					else {
 						if (message.contains("tparsemet")) {
