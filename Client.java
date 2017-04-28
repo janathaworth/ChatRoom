@@ -244,9 +244,9 @@ public class Client  {
 							while (parts[i - 1].equals(parts[i])) {
 								i++; 
 							}
-							receiver = parts[i];
-							if (name.equals(parts[i])) {
-								ta.appendText(parts[i +  1] + "\n");
+							receiver = parts[i - 1];
+							if (name.equals(parts[i - 1])) {
+								ta.appendText(parts[i] + "\n");
 							}
 							System.out.println(Arrays.toString(parts));
 						}
