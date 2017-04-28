@@ -217,6 +217,7 @@ public class Client  {
 	class IncomingReader implements Runnable {
 		String message; 
 		String receiver = ""; 
+		String sender = ""; 
 		public void run() { 
 			try {
 				
@@ -245,7 +246,8 @@ public class Client  {
 								i++; 
 							}
 							receiver = parts[i - 1];
-							if (name.equals(parts[i - 1])) {
+							sender = parts[i].split(":")[0];
+							if (name.equals(receiver) || name.equals(sender) ) {
 								ta.appendText(parts[i] + "\n");
 							}
 							System.out.println(Arrays.toString(parts));
