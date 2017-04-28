@@ -39,6 +39,8 @@ import javafx.scene.layout.VBox;
 import javafx.scene.media.AudioClip;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
+import javafx.scene.paint.Color;
+import javafx.scene.text.Text;
 import javafx.scene.text.TextFlow;
 import javafx.stage.Stage;
 import junit.framework.Test;
@@ -69,7 +71,7 @@ public class Client  {
 	public Scene getScene() {
 		
 		try {
-			Socket sock = new Socket("10.146.204.23", 4242); //127.0.0.1
+			Socket sock = new Socket("10.146.239.174", 4242); //10.146.204.23
 			writer = new PrintWriter(sock.getOutputStream());
 			InputStreamReader streamReader = new InputStreamReader(sock.getInputStream());
 			reader = new BufferedReader(streamReader);
@@ -141,7 +143,7 @@ public class Client  {
 			// send the message to the server
 //			writer.println(name + ": " + message);
 //			writer.flush();
-			
+			playSound();
 			String timeStamp = new SimpleDateFormat("HH:mm:ss").format(Calendar.getInstance().getTime());
 			writer.println(name + ": " + message);
 			writer.println("                                       " + timeStamp);
@@ -188,10 +190,11 @@ public class Client  {
 //					"https://www.soundjay.com/button/sounds/button-09.mp3");
 //		     aud.play();
 //			 aud.stop();
+			playSound();
 			// get the message from the text field
-	
 			String message = tf.getText();
 			tf.clear();
+			
 			String timeStamp = new SimpleDateFormat("HH:mm:ss").format(Calendar.getInstance().getTime());
 			writer.println(name + ": " + message);
 			writer.println("                                       " + timeStamp);
@@ -213,9 +216,9 @@ public class Client  {
 		        	sendBt.setEffect(null);
 		        }
 		});
-		
+        Label catLabel = new Label("\uD83D\uDC31");
 		//String image = "http://allenage.com/wp-content/uploads/2016/03/crying-emoji.jpg?15b286"; 
-		pane1.getChildren().addAll(new Label("Enter a message: "), tf, emojiBt, sendBt);
+		pane1.getChildren().addAll(new Label("Enter a message: "), tf, emojiBt, sendBt, catLabel);
 	    FlowPane.setMargin(emojiBt,new Insets(0));
 
 		v.getChildren().addAll(new ScrollPane(ta), pane1);
@@ -223,10 +226,25 @@ public class Client  {
 		
 		return new Scene(border);
 	}
-		
+	
+	
+	/*   Play Audio Sounds 	*/	
+	public void playSound() {
+        Runnable soundPlay = new Runnable() {
+            @Override
+            public void run() {
+            	AudioClip aud = new AudioClip(
+    					"https://www.soundjay.com/button/sounds/button-09.mp3");
+    		     aud.play();            
+            };
+        };
+	}
+
 	class IncomingReader implements Runnable {
-		ImageView greenIcon = new ImageView(new Image(getClass().getClassLoader().getResource(
-				"http://www.clker.com/cliparts/u/g/F/R/X/9/green-circle-hi.png").toString()));
+		ImageView userImage;
+//		ImageView greenIcon = new ImageView(
+//			      new Image("http://www.clker.com/cliparts/u/g/F/R/X/9/green-circle-hi.png")
+//		);
 		String message; 
 		String receiver = ""; 
 		String sender = ""; 
@@ -243,7 +261,8 @@ public class Client  {
 								online.add(not);
 								Platform.runLater(new Runnable() {
 					                 @Override public void run() {
-					                	 list.getItems().add(greenIcon + not);
+					                	 //userImage.setImage(new Image("http://www.clker.com/cliparts/u/g/F/R/X/9/green-circle-hi.png"));
+					                	 list.getItems().add(not);
 					                 }
 								});
 							}
