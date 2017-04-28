@@ -118,8 +118,15 @@ public class Client  {
 		pane.getChildren().add( v);
 		
 		String receiver = ""; 
-		list.setOnMouseClicked(e1 -> {
-			writer.print("ttt" + list.getSelectionModel().getSelectedItem() + "ttt");
+		list.addEventHandler(MouseEvent.MOUSE_CLICKED, 
+		    new EventHandler<MouseEvent>() {
+			String lastClick; 
+	        @Override public void handle(MouseEvent e) {
+	        	String thisClick = list.getSelectionModel().getSelectedItem();
+	        	if (lastClick != null && !lastClick.equals(thisClick)) {
+	        		writer.print("ttt" + thisClick + "ttt");
+	        	}
+	        }
 		});
 	   
 		// handle action event
