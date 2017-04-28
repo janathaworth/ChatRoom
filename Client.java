@@ -54,6 +54,7 @@ public class Client  {
 	TextArea ta;
 	TextField  tf;
 	String name; 
+	String lastClick;
 	
 	public Client(String name, Stage s) {
 		this.name = name; 
@@ -70,7 +71,7 @@ public class Client  {
 	public Scene getScene() {
 		
 		try {
-			Socket sock = new Socket("10.146.239.174", 4242); //10.146.204.23
+			Socket sock = new Socket("10.146.162.215", 4242); //10.146.204.23
 			writer = new PrintWriter(sock.getOutputStream());
 			InputStreamReader streamReader = new InputStreamReader(sock.getInputStream());
 			reader = new BufferedReader(streamReader);
@@ -119,12 +120,13 @@ public class Client  {
 		
 		String receiver = ""; 
 		list.addEventHandler(MouseEvent.MOUSE_CLICKED, 
-		    new EventHandler<MouseEvent>() {
-			String lastClick; 
+		    new EventHandler<MouseEvent>() { 
 	        @Override public void handle(MouseEvent e) {
 	        	String thisClick = list.getSelectionModel().getSelectedItem();
+	        	lastClick = thisClick; 
 	        	//if (lastClick == null || !lastClick.equals(thisClick)) {
 	        	if (thisClick != null) {
+	        		ta.setText("");
 	        		writer.println("update:" + name + ":" + thisClick );
 	        		writer.flush(); 
 	        		writer.print( thisClick + "ttt");
@@ -244,7 +246,7 @@ public class Client  {
 		String message; 
 		String receiver = ""; 
 		String sender = ""; 
-		public void run() { 
+		public void run() {  
 			try {
 				message = reader.readLine(); 
 				String check = "tparsemet" + name;
@@ -272,7 +274,7 @@ public class Client  {
 							}
 							receiver = parts[i - 1];
 							sender = parts[i].split(":")[0];
-							if (name.equals(receiver) || name.equals(sender) ) {
+							if (( lastClick != null && (name.equals(receiver) && lastClick.equals(sender)) )|| name.equals(sender) ) {
 								System.out.println(Arrays.toString(parts));
 								ta.appendText(parts[i].split("tmstp")[0] + "\n");
 //								Text t = new Text();
@@ -292,14 +294,15 @@ public class Client  {
 								ta.setText("");
 							}
 							else if (name.equals(sent)) {
-								ta.setText(incoming[3]);
+								ta.appendText(incoming[3] + "\n");
 							}
 						}
 						else {
 							//System.out.println(receiver);
-							if (receiver.equals(name)) {
-								ta.appendText(message + "\n");
-							}
+//							if (receiver.equals(name) && lastClick.equals(sender)) {
+//								ta.appendText(message + "\n");
+//							}
+							writer.println(receiver + "ttt" + message);
 							
 						}
 					}

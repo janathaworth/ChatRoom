@@ -116,31 +116,36 @@ public class Server extends Observable {
 					else if (message.contains("update")) {
 						String request = message.split(":")[2];
 						String sender = message.split(":")[1];
-						String fileName = request + ".txt";
+						String fileName = sender + request + ".txt";
 						String line = null; 
 						String convo = ""; 
 						FileReader fileReader; 
 						File f = new File(fileName);
 						f.createNewFile(); 
 						fileReader = new FileReader(fileName);
-						System.out.println("reading from: " + request );
+						System.out.println("reading from: " + sender + request );
 						BufferedReader bufferedReader =  new BufferedReader(fileReader);
 						while((line = bufferedReader.readLine()) != null) {
-								convo = convo.concat(line);
+							message = "update::" + sender + "::" + request + "::" +  line;
+							setChanged();
+							System.out.println("sent" + message);
+			                notifyObservers(message);
+								
 			            }   
-						setChanged();
-						message = "update::" + sender + "::" + request + "::" +  convo;
-						System.out.println("sent" + message);
-		                notifyObservers(message);
+						
 						
 					}
 					else if (message.contains("ttt")) {
 						String[] parts = message.split("ttt");
 						String receiver = parts[0];
 						String sender = parts[1].split(":")[0];
-						FileWriter fileWriter = new FileWriter(receiver + ".txt", true);
+						FileWriter fileWriter = new FileWriter(sender + receiver + ".txt", true);
 					    fileWriter.write(parts[1] + "\n");
 					    fileWriter.close();
+					    
+					    FileWriter fileWriter2 = new FileWriter(receiver + sender + ".txt", true);
+					    fileWriter2.write(parts[1] + "\n");
+					    fileWriter2.close();
 					    
 					    setChanged();
 						notifyObservers(message);
