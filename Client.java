@@ -52,9 +52,9 @@ public class Client  {
 	PrintWriter writer;
 	TextArea ta;
 	TextField  tf;
-	ImageView onlineImage = new ImageView(
-		      new Image("conniejehng/Documents/workspace/422c_labs/src/online.png")
-	);
+//	ImageView onlineImage = new ImageView(
+//		      new Image("conniejehng/Documents/workspace/422c_labs/src/online.png")
+//	);
 	String name; 
 	
 	public Client(String name, Stage s) {
@@ -142,8 +142,13 @@ public class Client  {
 			String message = tf.getText();
 			tf.clear();
 			// send the message to the server
+//			writer.println(name + ": " + message);
+//			writer.flush();
+			
+			String timeStamp = new SimpleDateFormat("HH:mm:ss").format(Calendar.getInstance().getTime());
 			writer.println(name + ": " + message);
-			writer.flush();
+			writer.println("                                       " + timeStamp);
+			writer.flush(); 
 		});
 //		ImageView cry = new ImageView(
 //			      new Image("http://allenage.com/wp-content/uploads/2016/03/crying-emoji.jpg?15b286")
@@ -187,6 +192,7 @@ public class Client  {
 //		     aud.play();
 //			 aud.stop();
 			// get the message from the text field
+	
 			String message = tf.getText();
 			tf.clear();
 			String timeStamp = new SimpleDateFormat("HH:mm:ss").format(Calendar.getInstance().getTime());
@@ -203,7 +209,7 @@ public class Client  {
 		        	sendBt.setEffect(shadow);
 		        }
 		});
-		//Removing the shadow when the mouse cursor is off
+	//	Removing the shadow when the mouse cursor is off
 		sendBt.addEventHandler(MouseEvent.MOUSE_EXITED, 
 		    new EventHandler<MouseEvent>() {
 		        @Override public void handle(MouseEvent e) {
@@ -279,9 +285,9 @@ public class Client  {
 							
 						}
 					}
+					System.out.println(message);
 					message = reader.readLine(); 
 				}
-				System.out.println(message);
 				} 
 			catch (IOException ex) { ex.printStackTrace(); }
 			}
