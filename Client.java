@@ -43,6 +43,7 @@ import javafx.stage.Stage;
 import junit.framework.Test;
 
 public class Client  {
+	ArrayList<String> online; 
 	int port = 4242;
 	
 	ListView<String> list;
@@ -55,16 +56,30 @@ public class Client  {
 	
 	public Client(String name, Stage s) {
 		this.name = name; 
-		//s = new Stage(); 
+		s = new Stage(); 
 		Scene scene = getScene(); 
 		s.setTitle(name); // Set the stage title
 		s.setScene(scene); // Place the scene in the stage
 		s.show(); // Display the stage
 //		writer.println("tparsemet" + name);
 //		writer.flush();
+		online = new ArrayList<String>(); 
 	}
 	
 	public Scene getScene() {
+		
+		try {
+			Socket sock = new Socket("92.168.1.116", 4242);
+			writer = new PrintWriter(sock.getOutputStream());
+			InputStreamReader streamReader = new InputStreamReader(sock.getInputStream());
+			reader = new BufferedReader(streamReader);
+			Thread readerThread = new Thread(new IncomingReader()); 
+			readerThread.start();
+			}
+		catch (Exception e) {
+					e.printStackTrace(); 
+		}
+		
 		// Panel p to hold the label and text field
 		// Create UI
 		BorderPane border = new BorderPane(); 
@@ -90,12 +105,13 @@ public class Client  {
 
 		ObservableList<String> items = FXCollections.observableArrayList();
 		items.add("Online Users:");
-		ArrayList<String> users = Server.getUsers(); 
-		for (String name : users) {
-			if (!name.equals(this.name)){
-				items.add(name);
-			}
-		}
+//		ArrayList<String> users = Server.getUsers(); 
+//		for (String name : users) {
+//			if (!name.equals(this.name)){
+//				items.add(name);
+//			}
+//		}
+		writer.println("users");
 		list.setItems(items);
 		border.setLeft(list);
 		pane.getChildren().add( v);
@@ -180,18 +196,7 @@ public class Client  {
 
 		v.getChildren().addAll(new ScrollPane(ta), pane1);
 		border.setRight(pane);
-		Socket sock;
-		try {
-			sock = new Socket("10.145.6.225", 4242);
-			writer = new PrintWriter(sock.getOutputStream());
-			InputStreamReader streamReader = new InputStreamReader(sock.getInputStream());
-			reader = new BufferedReader(streamReader);
-			Thread readerThread = new Thread(new IncomingReader()); 
-			readerThread.start();
-			}
-		catch (Exception e) {
-					e.printStackTrace(); 
-		}
+		
 		return new Scene(border);
 	}
 		
@@ -206,13 +211,15 @@ public class Client  {
 					//System.out.println(message);
 					if (!message.equals(check)) {
 						if (message.contains("tparsemet")) {
-							message = message.substring(9);
-							Platform.runLater(new Runnable() {
-				                 @Override public void run() {
-				                	
-				                	 list.getItems().add(message);
-				                 }
-							});
+							String not = message.substring(9);
+							if (!online.contains(not)) {
+								online.add(not);
+								Platform.runLater(new Runnable() {
+					                 @Override public void run() {
+					                	 list.getItems().add(not);
+					                 }
+								});
+							}
 						}
 						else {
 							ta.appendText(message + "\n");
