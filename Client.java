@@ -52,9 +52,6 @@ public class Client  {
 	PrintWriter writer;
 	TextArea ta;
 	TextField  tf;
-//	ImageView onlineImage = new ImageView(
-//		      new Image("conniejehng/Documents/workspace/422c_labs/src/online.png")
-//	);
 	String name; 
 	
 	public Client(String name, Stage s) {
@@ -72,7 +69,7 @@ public class Client  {
 	public Scene getScene() {
 		
 		try {
-			Socket sock = new Socket("10.146.204.23", 4242);
+			Socket sock = new Socket("10.146.204.23", 4242); //127.0.0.1
 			writer = new PrintWriter(sock.getOutputStream());
 			InputStreamReader streamReader = new InputStreamReader(sock.getInputStream());
 			reader = new BufferedReader(streamReader);
@@ -103,7 +100,7 @@ public class Client  {
 		
 //		MenuBar menuBar = new MenuBar(); 
 //		ScrollPane online = new ScrollPane();
-		
+
 		 list = new ListView<>();
 
 		ObservableList<String> items = FXCollections.observableArrayList();
@@ -228,6 +225,8 @@ public class Client  {
 	}
 		
 	class IncomingReader implements Runnable {
+		ImageView greenIcon = new ImageView(new Image(getClass().getClassLoader().getResource(
+				"http://www.clker.com/cliparts/u/g/F/R/X/9/green-circle-hi.png").toString()));
 		String message; 
 		String receiver = ""; 
 		String sender = ""; 
@@ -244,7 +243,7 @@ public class Client  {
 								online.add(not);
 								Platform.runLater(new Runnable() {
 					                 @Override public void run() {
-					                	 list.getItems().add(not);
+					                	 list.getItems().add(greenIcon + not);
 					                 }
 								});
 							}
