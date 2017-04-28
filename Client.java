@@ -52,7 +52,9 @@ public class Client  {
 	PrintWriter writer;
 	TextArea ta;
 	TextField  tf;
-
+	ImageView onlineImage = new ImageView(
+		      new Image("conniejehng/Documents/workspace/422c_labs/src/online.png")
+	);
 	String name; 
 	
 	public Client(String name, Stage s) {
