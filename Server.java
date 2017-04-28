@@ -92,10 +92,6 @@ public class Server extends Observable {
 				String message = reader.readLine(); 
 				//System.out.println("recevied: " + message);
 				while (message != null) {
-					if (message.contains("tparsemet")) {
-						newClient(message.substring(9)); 
-						message = message.split(" ")[0];
-					}
 					if (message.contains("users")) {
 						String fileName = "users.txt";
 						String line = null; 
@@ -116,9 +112,17 @@ public class Server extends Observable {
 				           	e.printStackTrace();
 				        }
 					}
-					setChanged();
-					notifyObservers(message);
-					message = reader.readLine(); 
+					else {
+						if (message.contains("tparsemet")) {
+							newClient(message.substring(9)); 
+							message = message.split(" ")[0];
+						}
+						
+						setChanged();
+						notifyObservers(message);
+						message = reader.readLine(); 
+					}
+					
 				}
 			}
 			catch (IOException e) {
