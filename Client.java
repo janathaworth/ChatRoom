@@ -123,9 +123,9 @@ public class Client  {
 			String lastClick; 
 	        @Override public void handle(MouseEvent e) {
 	        	String thisClick = list.getSelectionModel().getSelectedItem();
-	        	if (lastClick == null || !lastClick.equals(thisClick)) {
+	        	//if (lastClick == null || !lastClick.equals(thisClick)) {
 	        		writer.print( thisClick + "ttt");
-	        	}
+	        	//}
 	        }
 		});
 	   
