@@ -100,11 +100,9 @@ public class Server extends Observable {
 				            BufferedReader bufferedReader =  new BufferedReader(fileReader);
 				            
 				            while((line = bufferedReader.readLine()) != null) {
-				            	System.out.println("line " + line);
 				            	String[] split = line.split(" ");
 				            	setChanged();
 				                notifyObservers("tparsemet" + split[0]);
-				                System.out.println(split[0] + " exists");
 				            }   
 				            bufferedReader.close();         
 				        }
@@ -120,8 +118,8 @@ public class Server extends Observable {
 						
 						setChanged();
 						notifyObservers(message);
-						message = reader.readLine(); 
 					}
+					message = reader.readLine(); 
 					
 				}
 			}

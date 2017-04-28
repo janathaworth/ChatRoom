@@ -9,6 +9,7 @@ import java.net.Socket;
 import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
 
 import javafx.application.Platform;
@@ -115,6 +116,12 @@ public class Client  {
 		list.setItems(items);
 		border.setLeft(list);
 		pane.getChildren().add( v);
+		
+		String receiver = ""; 
+		list.setOnMouseClicked(e1 -> {
+			writer.print("ttt" + list.getSelectionModel().getSelectedItem() + "ttt");
+		});
+	   
 		// handle action event
 		tf.setOnAction(e -> {
 			// get the message from the text field
@@ -202,6 +209,7 @@ public class Client  {
 		
 	class IncomingReader implements Runnable {
 		String message; 
+		String receiver = ""; 
 		public void run() { 
 			try {
 				
@@ -221,8 +229,22 @@ public class Client  {
 								});
 							}
 						}
+						
+						else if (message.contains("ttt")) {
+							System.out.println(message);
+							String[] parts = message.split("ttt");
+							receiver = parts[1];
+							if (name.equals(parts[1])) {
+								ta.appendText(parts[2] + "\n");
+							}
+							System.out.println(Arrays.toString(parts));
+						}
 						else {
-							ta.appendText(message + "\n");
+							//System.out.println(receiver);
+							if (receiver.equals(name)) {
+								ta.appendText(message + "\n");
+							}
+							
 						}
 					}
 					message = reader.readLine(); 
