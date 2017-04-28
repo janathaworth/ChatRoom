@@ -123,8 +123,8 @@ public class Client  {
 			String lastClick; 
 	        @Override public void handle(MouseEvent e) {
 	        	String thisClick = list.getSelectionModel().getSelectedItem();
-	        	if (lastClick != null && !lastClick.equals(thisClick)) {
-	        		writer.print("ttt" + thisClick + "ttt");
+	        	if (lastClick == null || !lastClick.equals(thisClick)) {
+	        		writer.print( thisClick + "ttt");
 	        	}
 	        }
 		});
@@ -240,9 +240,13 @@ public class Client  {
 						else if (message.contains("ttt")) {
 							System.out.println(message);
 							String[] parts = message.split("ttt");
-							receiver = parts[1];
-							if (name.equals(parts[1])) {
-								ta.appendText(parts[2] + "\n");
+							int i = 1; 
+							while (parts[i - 1].equals(parts[i])) {
+								i++; 
+							}
+							receiver = parts[i];
+							if (name.equals(parts[i])) {
+								ta.appendText(parts[i +  1] + "\n");
 							}
 							System.out.println(Arrays.toString(parts));
 						}
