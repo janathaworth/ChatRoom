@@ -39,6 +39,7 @@ import javafx.scene.layout.VBox;
 import javafx.scene.media.AudioClip;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
+import javafx.scene.text.Text;
 import javafx.scene.text.TextFlow;
 import javafx.stage.Stage;
 import junit.framework.Test;
@@ -143,8 +144,7 @@ public class Client  {
 //			writer.flush();
 			
 			String timeStamp = new SimpleDateFormat("HH:mm:ss").format(Calendar.getInstance().getTime());
-			writer.println(name + ": " + message);
-			writer.println("                                       " + timeStamp);
+			writer.println(name + ": " + message );
 			writer.flush(); 
 		});
 //		ImageView cry = new ImageView(
@@ -225,8 +225,8 @@ public class Client  {
 	}
 		
 	class IncomingReader implements Runnable {
-		ImageView greenIcon = new ImageView(new Image(getClass().getClassLoader().getResource(
-				"http://www.clker.com/cliparts/u/g/F/R/X/9/green-circle-hi.png").toString()));
+		ImageView greenIcon = new ImageView( new Image(
+				"http://www.clker.com/cliparts/u/g/F/R/X/9/green-circle-hi.png"));
 		String message; 
 		String receiver = ""; 
 		String sender = ""; 
@@ -243,7 +243,7 @@ public class Client  {
 								online.add(not);
 								Platform.runLater(new Runnable() {
 					                 @Override public void run() {
-					                	 list.getItems().add(greenIcon + not);
+					                	 list.getItems().add( not);
 					                 }
 								});
 							}
@@ -259,12 +259,17 @@ public class Client  {
 							receiver = parts[i - 1];
 							sender = parts[i].split(":")[0];
 							if (name.equals(receiver) || name.equals(sender) ) {
-								ta.appendText(parts[i] + "\n");
+								System.out.println(Arrays.toString(parts));
+								ta.appendText(parts[i].split("tmstp")[0] + "\n");
+//								Text t = new Text();
+//						        t.setStyle("-fx-background-color: #DFF2BF;-fx-text-fill: #4F8A10;-fx-font-weight:bold;");
+//						        t.setText( parts[i].split("tmstp")[1]+ "\n");
+//						        ta.appendText(t.toString());
 							}
 							//System.out.println(Arrays.toString(parts));
 						}
 						else if (message.contains("update")) {
-							String[] incoming = message.split(":");
+							String[] incoming = message.split("::");
 							System.out.println(Arrays.toString(incoming));
 							System.out.println("length is " + incoming.length);
 							String sent = incoming[1];

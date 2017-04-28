@@ -93,7 +93,7 @@ public class Server extends Observable {
 		public void run() {
 			try {
 				String message = reader.readLine(); 
-				//System.out.println("recevied: " + message);
+				System.out.println("recevied: " + message);
 				while (message != null) {
 					if (message.contains("users")) {
 						String fileName = "users.txt";
@@ -123,13 +123,27 @@ public class Server extends Observable {
 						File f = new File(fileName);
 						f.createNewFile(); 
 						fileReader = new FileReader(fileName);
-						
+						System.out.println("reading from: " + request );
 						BufferedReader bufferedReader =  new BufferedReader(fileReader);
 						while((line = bufferedReader.readLine()) != null) {
-			            	convo.concat(line);
+								convo = convo.concat(line);
 			            }   
 						setChanged();
-		                notifyObservers("update:" + sender + ":" + request + ":" +  convo);
+						message = "update::" + sender + "::" + request + "::" +  convo;
+						System.out.println("sent" + message);
+		                notifyObservers(message);
+						
+					}
+					else if (message.contains("ttt")) {
+						String[] parts = message.split("ttt");
+						String receiver = parts[0];
+						String sender = parts[1].split(":")[0];
+						FileWriter fileWriter = new FileWriter(receiver + ".txt", true);
+					    fileWriter.write(parts[1] + "\n");
+					    fileWriter.close();
+					    
+					    setChanged();
+						notifyObservers(message);
 						
 					}
 					else {
