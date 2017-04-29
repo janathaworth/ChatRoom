@@ -79,7 +79,7 @@ public class ClientMain extends Application {
 
 		userList = new HashMap<String, String>();
 		try {
-			Socket sock = new Socket("127.0.0.1", 4242); // 10.146.204.23
+			Socket sock = new Socket("10.146.224.142", 4242); // 10.146.204.23
 			writer = new PrintWriter(sock.getOutputStream());
 			InputStreamReader streamReader = new InputStreamReader(sock.getInputStream());
 			reader = new BufferedReader(streamReader);
@@ -185,7 +185,7 @@ public class ClientMain extends Application {
 						}
 
 						else if (name2.getText().equals("") || name2.getText().contains(" ")
-								|| name2.getText().contains("~")) {
+								|| name2.getText().contains("~") || name2.getText().equals("Everyone")) {
 							Platform.runLater(new Runnable() {
 								@Override
 								public void run() {
@@ -247,7 +247,10 @@ public class ClientMain extends Application {
 									@Override
 									public void run() {
 										incorrect.setText("");
+//										writer.println("*" + name.getText());
 										Client client = new Client(name.getText(), primaryStage);
+										client.writer.println("~parseme~" + name.getText() + " " + pw.getText());
+										client.writer.flush();
 									}
 								});
 							}

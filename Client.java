@@ -68,10 +68,21 @@ public class Client  {
 		online = new ArrayList<String>(); 
 	}
 	
+	public void reviveClient() {
+		Stage s = new Stage(); 
+		Scene scene = getScene(); 
+		s.setTitle(name); // Set the stage title
+		s.setScene(scene); // Place the scene in the stage
+		s.show(); // Display the stage
+//		writer.println("tparsemet" + name);
+//		writer.flush();
+		online = new ArrayList<String>(); 
+	}
+	
 	public Scene getScene() {
 		
 		try {
-			Socket sock = new Socket("127.0.0.1", 4242); //10.146.204.23
+			Socket sock = new Socket("10.146.224.142", 4242); //10.146.204.23
 			writer = new PrintWriter(sock.getOutputStream());
 			InputStreamReader streamReader = new InputStreamReader(sock.getInputStream());
 			reader = new BufferedReader(streamReader);
@@ -287,6 +298,13 @@ public class Client  {
 							}
 							//System.out.println(Arrays.toString(parts));
 						}
+//						else if (message.contains("*")) {
+//							message = message.substring(1);
+//							if (name.equals(message)) {
+//								reviveClient();
+//							}
+//						
+//						}
 						else if (message.contains("update")) {
 							String[] incoming = message.split("::");
 							System.out.println(Arrays.toString(incoming));

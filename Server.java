@@ -69,7 +69,7 @@ public class Server extends Observable {
 		public void run() {
 			try {
 				String message = reader.readLine(); 
-				System.out.println("recevied: " + message);
+				//System.out.println("recevied: " + message);
 				while (message != null) {
 					if (message.contains("users")) {
 						String fileName = "users.txt";
@@ -149,6 +149,10 @@ public class Server extends Observable {
 						setChanged();
 						notifyObservers(message);
 					}
+//					else if (message.contains("*")) {
+//						setChanged(); 
+//						notifyObservers(message);
+//					}
 					else  {
 						setChanged();
 						notifyObservers(message);
