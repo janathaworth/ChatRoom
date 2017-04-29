@@ -71,7 +71,7 @@ public class Client  {
 	public Scene getScene() {
 		
 		try {
-			Socket sock = new Socket("192.168.1.116", 4242); //10.146.204.23
+			Socket sock = new Socket("10.146.224.142", 4242); //10.146.204.23
 			writer = new PrintWriter(sock.getOutputStream());
 			InputStreamReader streamReader = new InputStreamReader(sock.getInputStream());
 			reader = new BufferedReader(streamReader);
@@ -129,7 +129,7 @@ public class Client  {
 	        		ta.setText("");
 	        		writer.println("update:" + name + ":" + thisClick );
 	        		writer.flush(); 
-	        		writer.print( thisClick + "ttt");
+	        		//writer.print( thisClick + "ttt");
 	        	}
 	        		
 	        	//}
@@ -146,7 +146,7 @@ public class Client  {
 //			writer.flush();
 			playSound();
 			String timeStamp = new SimpleDateFormat("HH:mm:ss").format(Calendar.getInstance().getTime());
-			writer.println(name + ": " + message );
+			writer.println(lastClick + "~" + name + ": " + message );
 			writer.flush(); 
 		});
 //		ImageView cry = new ImageView(
@@ -249,11 +249,11 @@ public class Client  {
 		public void run() {  
 			try {
 				message = reader.readLine(); 
-				String check = "tparsemet" + name;
+				String check = "~parseme~" + name;
 				while (message != null) {
 					//System.out.println(message);
 					if (!message.equals(check)) {
-						if (message.contains("tparsemet")) {
+						if (message.contains("~parseme~")) {
 							String not = message.substring(9);
 							if (!online.contains(not)) {
 								online.add(not);
@@ -265,9 +265,9 @@ public class Client  {
 							}
 						}
 						
-						else if (message.contains("ttt")) {
+						else if (message.contains("~")) {
 							//System.out.println(message);
-							String[] parts = message.split("ttt");
+							String[] parts = message.split("~");
 							int i = 1; 
 							while (parts[i - 1].equals(parts[i])) {
 								i++; 
@@ -297,17 +297,17 @@ public class Client  {
 								ta.appendText(incoming[3] + "\n");
 							}
 						}
-						else {
-							//System.out.println(receiver);
-//							if (receiver.equals(name) && lastClick.equals(sender)) {
+//						else {
+//							//System.out.println(receiver);
+////							if (receiver.equals(name) && lastClick.equals(sender)) {
+////								ta.appendText(message + "\n");
+////							}
+//							sender = message.split(":")[0];
+//							if (sender.equals(name) || lastClick.equals(sender)) {
 //								ta.appendText(message + "\n");
 //							}
-							sender = message.split(":")[0];
-							if (sender.equals(name) || lastClick.equals(sender)) {
-								ta.appendText(message + "\n");
-							}
-							
-						}
+//							
+						//}
 					}
 					System.out.println("received " + message);
 					message = reader.readLine(); 

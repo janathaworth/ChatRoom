@@ -1,11 +1,18 @@
 package assignment7;
 
+import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.PrintWriter;
+import java.net.Socket;
 import java.util.HashMap;
 import java.util.Map;
+
+import assignment7.Client.IncomingReader;
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
@@ -21,8 +28,23 @@ import javafx.stage.Stage;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 
+//label and ~~ and try catch
+
 public class ClientMain extends Application {
-	String fileName = "users.txt";
+	PrintWriter writer; 
+	private BufferedReader reader; 
+	Label incorrect;
+	Label incorrect2;
+	
+	Boolean processed; 
+	
+	Map<String, String> userList;
+	
+	TextField name2;
+	PasswordField pw2;
+	PasswordField pw3;
+	
+	Stage primaryStage; 
     
 	public static void main(String[] args) {
 		launch();
@@ -30,6 +52,7 @@ public class ClientMain extends Application {
 
 	@Override
 	public void start(Stage primaryStage) throws Exception {
+		this.primaryStage = primaryStage; 
 		VBox box = new VBox(); 
 		FlowPane user = new FlowPane();
 		FlowPane pass = new FlowPane(); 
@@ -42,7 +65,7 @@ public class ClientMain extends Application {
 		
 		Button login = new Button("Log In");
 		Hyperlink register = new Hyperlink("Create Account");
-		Label incorrect = new Label();
+		incorrect = new Label();
 		box.getChildren().addAll(user, pass, login, register, incorrect);
 		box.setAlignment(Pos.CENTER);
 		box.setSpacing(10);
@@ -53,8 +76,27 @@ public class ClientMain extends Application {
 		Scene scene = new Scene(box);
 		primaryStage.setScene(scene);
 		
+		userList = new HashMap<String, String>(); 
+		try{
+			Socket sock = new Socket("10.146.224.142", 4242); //10.146.204.23
+			writer = new PrintWriter(sock.getOutputStream());
+			InputStreamReader streamReader = new InputStreamReader(sock.getInputStream());
+			reader = new BufferedReader(streamReader);
+			Thread readerThread = new Thread(new IncomingReader()); 
+			readerThread.start();
+		}
+		catch (Exception e) {
+				e.printStackTrace(); 
+		}
+		
+		
+		
 		EventHandler log = new EventHandler<ActionEvent> () {
 			@Override public void handle(ActionEvent e) {
+				
+				
+				
+				
 				//synchronized (Server.names) {
 	                 if (false) {			//username exists //Server.names.containsKey(name.getText())
 	                	 if(false) {	//password does not match //Server.names.get(name.getText() != pw.getText()
@@ -85,9 +127,9 @@ public class ClientMain extends Application {
 			FlowPane user2 = new FlowPane();
 			FlowPane pass2 = new FlowPane(); 
 			FlowPane pass3 = new FlowPane(); 
-			TextField name2 = new TextField();
-			PasswordField pw2 = new PasswordField();
-			PasswordField pw3 = new PasswordField();
+			name2 = new TextField();
+			pw2 = new PasswordField();
+			pw3 = new PasswordField();
 			user2.getChildren().addAll(new Label("Username: "), name2);
 			pass2.getChildren().addAll(new Label("Password:  "), pw2 );
 			pass3.getChildren().addAll(new Label("Re-Enter Password: "), pw3 );
@@ -95,7 +137,7 @@ public class ClientMain extends Application {
 			pass2.setAlignment(Pos.CENTER);
 			//pass3.setAlignment(Pos.CENTER);
 			Button reg = new Button("Register");
-			Label incorrect2 = new Label();
+			incorrect2 = new Label();
 			box2.getChildren().addAll(user2, pass2, pass3, reg, incorrect2);
 			box2.setAlignment(Pos.CENTER);
 			box2.setSpacing(10);
@@ -107,36 +149,13 @@ public class ClientMain extends Application {
 			Scene newScene = new Scene(box2); 
 			primaryStage.setScene(newScene);
 			
+			
 			EventHandler click = new EventHandler<ActionEvent> () {
 				@Override public void handle(ActionEvent e) {
-					//synchronized (Server.names) {
-		                // if (Server.names.containsKey(name2.getText())) {		
-						if (false) { // CHANGE LATER PLSSSSSS
-		                		incorrect2.setText("Username already taken!");
-		                        incorrect2.setTextFill(Color.rgb(210, 39, 30));
-		                 }
-		                 else if (name2.getText().equals("") || name2.getText().contains(" ")) {
-		                	 incorrect2.setText("Invalid Username");
-	                         incorrect2.setTextFill(Color.rgb(210, 39, 30));
-		                 }
-		                 else if (pw2.getText().equals("")) {
-		                	 incorrect2.setText("Please enter a password");
-	                         incorrect2.setTextFill(Color.rgb(210, 39, 30));
-		                 }
-		                 else if(!pw2.getText().equals(pw3.getText())) {
-		                	 incorrect2.setText("Passwords do not match. Please try again.");
-	                         incorrect2.setTextFill(Color.rgb(210, 39, 30));
-		                 }
-		                 else{
-		                	 Client client = new Client(name2.getText(), primaryStage);
-		                	 client.writer.println("tparsemet" + name2.getText() + " " + pw2.getText() );
-		                	 client.writer.flush(); 
-		                 }
-		            // }
-		             
-					name2.clear();
-					pw2.clear(); 
-					pw3.clear(); 
+					System.out.println("clicked");
+					writer.println("userspass reg");
+					writer.flush(); 
+		            
 	            }
 			};
 			
@@ -149,4 +168,90 @@ public class ClientMain extends Application {
 		primaryStage.show();
 	}
 
+	
+	class IncomingReader implements Runnable {
+		String message; 
+		
+		@Override
+		public void run() {
+			try {
+				message = reader.readLine();
+				while (message != null) {
+					if (message.contains("1parseme1") && message.contains("reg")) {
+						processed = true; 
+						message = message.substring(12);
+						System.out.println("sub" + message);
+						String name = message.split(" ")[0];
+						String password = message.split(" ")[1];
+						if (!userList.containsKey(name)) {
+							userList.put(name, password);
+						}
+
+							
+						
+//						name2.clear();
+//						pw2.clear(); 
+//						pw3.clear(); 
+						
+					}
+					if (message.contains("1parse1")) {
+						if (userList.containsKey(name2.getText())) {
+							 Platform.runLater(new Runnable() {
+				                 @Override public void run() {
+				                	 incorrect2.setText("Username already taken!");
+									incorrect2.setTextFill(Color.rgb(210, 39, 30));
+				                 }
+							});
+						}
+			
+						else if (name2.getText().equals("") || name2.getText().contains(" ") || name2.getText().contains("~")) {
+							 Platform.runLater(new Runnable() {
+				                 @Override public void run() {
+				                	 incorrect2.setText("Invalid Username");
+			                         incorrect2.setTextFill(Color.rgb(210, 39, 30));
+				                 }
+							});
+		                	 
+		                 }
+		                 else if (pw2.getText().equals("") || pw2.getText().contains(" ")) {
+		                	 Platform.runLater(new Runnable() {
+				                 @Override public void run() {
+				                	 incorrect2.setText("Invalid Password");
+			                         incorrect2.setTextFill(Color.rgb(210, 39, 30));
+				                 }
+							});
+		                
+		                 }
+		                 else if(!pw2.getText().equals(pw3.getText())) {
+		                	 Platform.runLater(new Runnable() {
+				                 @Override public void run() {
+				                	 incorrect2.setText("Passwords do not match. Please try again.");
+			                         incorrect2.setTextFill(Color.rgb(210, 39, 30));
+				                 }
+							});
+		                
+		                 }
+		                 else{
+		                	 Platform.runLater(new Runnable() {
+				                 @Override public void run() {
+				                	 Client client = new Client(name2.getText(), primaryStage);
+				                	 client.writer.println("~parseme~" + name2.getText() + " " + pw2.getText() );
+				                	 client.writer.flush(); 
+				                 }
+							});
+		                	
+		                 }
+					}
+					System.out.println("main received" + message);
+					message = reader.readLine(); 
+				}
+			}
+			catch (IOException e) {
+				e.printStackTrace();
+			} 
+				
+		
+			
+		}
+	}
 }

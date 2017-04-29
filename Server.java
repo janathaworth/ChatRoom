@@ -12,6 +12,7 @@ import java.io.PrintWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Observable;
@@ -21,14 +22,14 @@ public class Server extends Observable {
 	public void setUp() throws IOException{
 		ServerSocket serverSocket = new ServerSocket(4242);
 		//comment out until while loop if want to keep users
-		PrintWriter pw;
-		try {
-			pw = new PrintWriter("users.txt");
-			pw.close();
-		} catch (FileNotFoundException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		}
+//		PrintWriter pw;
+//		try {
+//			pw = new PrintWriter("users.txt");
+//			pw.close();
+//		} catch (FileNotFoundException e1) {
+//			// TODO Auto-generated catch block
+//			e1.printStackTrace();
+//		}
 		while(true) {
 			Socket clientSocket = serverSocket.accept();
 			ClientObserver client = new ClientObserver(clientSocket.getOutputStream());
@@ -51,31 +52,6 @@ public class Server extends Observable {
 	    }
 	}
 	
-
-	
-//	public static ArrayList<String> getUsers() {
-//
-//		ArrayList<String> users = new ArrayList<String>(); 
-//		String fileName = "users.txt";
-//		String line = null; 
-//		try {
-//            FileReader fileReader = new FileReader(fileName);
-//            BufferedReader bufferedReader =  new BufferedReader(fileReader);
-//            
-//            while((line = bufferedReader.readLine()) != null) {
-//            	System.out.println("line " + line);
-//            	String[] split = line.split(" ");
-//                users.add(split[0]);
-//            }   
-//            bufferedReader.close();         
-//        }
-//        catch(Exception e){
-//           	e.printStackTrace();
-//        }
-//		System.out.println(users);
-//		return users; 
-//	}
-//	
 	class ClientHandler implements Runnable {
 		BufferedReader reader; 
 
@@ -98,6 +74,12 @@ public class Server extends Observable {
 					if (message.contains("users")) {
 						String fileName = "users.txt";
 						String line = null; 
+						Boolean pass = false; 
+						
+						if (message.contains("pass")) {
+							pass  = true; 
+						}
+						
 						try {
 				            FileReader fileReader = new FileReader(fileName);
 				            BufferedReader bufferedReader =  new BufferedReader(fileReader);
@@ -105,14 +87,25 @@ public class Server extends Observable {
 				            while((line = bufferedReader.readLine()) != null) {
 				            	String[] split = line.split(" ");
 				            	setChanged();
-				                notifyObservers("tparsemet" + split[0]);
-				            }   
+				            	if (pass) {
+				            		notifyObservers("1parseme1" + message.split(" ")[1] + line);
+				            	}
+				            	else {
+				            		 notifyObservers("~parseme~" + split[0]);
+				            	}
+				               
+				            }
+				            if (pass) {
+				            	setChanged();
+				            	notifyObservers("1parse1");
+				            }
 				            bufferedReader.close();         
 				        }
 				        catch(Exception e){
 				           	e.printStackTrace();
 				        }
 					}
+		
 					else if (message.contains("update")) {
 						String request = message.split(":")[2];
 						String sender = message.split(":")[1];
@@ -135,7 +128,7 @@ public class Server extends Observable {
 						
 						
 					}
-					else if (message.contains("tparsemet")) {
+					else if (message.contains("~parseme~")) {
 						newClient(message.substring(9)); 
 						message = message.split(" ")[0];
 						setChanged();
@@ -144,9 +137,10 @@ public class Server extends Observable {
 					else  {
 						setChanged();
 						notifyObservers(message);
-							
-						String[] parts = message.split("ttt");
+						
+						String[] parts = message.split("~");
 						String receiver = parts[0];
+						System.out.println("parts " + Arrays.toString(parts));
 						String sender = parts[1].split(":")[0];
 						FileWriter fileWriter = new FileWriter(sender + receiver + ".txt", true);
 					    fileWriter.write(parts[1] + "\n");
