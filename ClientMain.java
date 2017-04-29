@@ -248,8 +248,6 @@ public class ClientMain extends Application {
 									public void run() {
 										incorrect.setText("");
 										Client client = new Client(name.getText(), primaryStage);
-										client.writer.println("~parseme~" + name.getText() + " " + pw.getText());
-										client.writer.flush();
 									}
 								});
 							}
