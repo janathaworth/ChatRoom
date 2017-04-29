@@ -135,7 +135,16 @@ public class Server extends Observable {
 						
 						
 					}
-					else if (message.contains("ttt")) {
+					else if (message.contains("tparsemet")) {
+						newClient(message.substring(9)); 
+						message = message.split(" ")[0];
+						setChanged();
+						notifyObservers(message);
+					}
+					else  {
+						setChanged();
+						notifyObservers(message);
+							
 						String[] parts = message.split("ttt");
 						String receiver = parts[0];
 						String sender = parts[1].split(":")[0];
@@ -146,20 +155,12 @@ public class Server extends Observable {
 					    FileWriter fileWriter2 = new FileWriter(receiver + sender + ".txt", true);
 					    fileWriter2.write(parts[1] + "\n");
 					    fileWriter2.close();
-					    
-					    setChanged();
-						notifyObservers(message);
 						
-					}
-					else {
-						if (message.contains("tparsemet")) {
-							newClient(message.substring(9)); 
-							message = message.split(" ")[0];
-						}
 						
-						setChanged();
-						notifyObservers(message);
+//						setChanged();
+//						notifyObservers(message);
 					}
+					System.out.println("recevied: " + message);
 					message = reader.readLine(); 
 					
 				}

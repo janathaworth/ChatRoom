@@ -71,7 +71,7 @@ public class Client  {
 	public Scene getScene() {
 		
 		try {
-			Socket sock = new Socket("10.146.162.215", 4242); //10.146.204.23
+			Socket sock = new Socket("192.168.1.116", 4242); //10.146.204.23
 			writer = new PrintWriter(sock.getOutputStream());
 			InputStreamReader streamReader = new InputStreamReader(sock.getInputStream());
 			reader = new BufferedReader(streamReader);
@@ -302,11 +302,14 @@ public class Client  {
 //							if (receiver.equals(name) && lastClick.equals(sender)) {
 //								ta.appendText(message + "\n");
 //							}
-							writer.println(receiver + "ttt" + message);
+							sender = message.split(":")[0];
+							if (sender.equals(name) || lastClick.equals(sender)) {
+								ta.appendText(message + "\n");
+							}
 							
 						}
 					}
-					System.out.println(message);
+					System.out.println("received " + message);
 					message = reader.readLine(); 
 				}
 				} 
