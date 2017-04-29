@@ -71,7 +71,7 @@ public class Client  {
 	public Scene getScene() {
 		
 		try {
-			Socket sock = new Socket("10.146.239.174", 4242); //10.146.204.23
+			Socket sock = new Socket("127.0.0.1", 4242); //10.146.204.23
 			writer = new PrintWriter(sock.getOutputStream());
 			InputStreamReader streamReader = new InputStreamReader(sock.getInputStream());
 			reader = new BufferedReader(streamReader);
@@ -106,7 +106,7 @@ public class Client  {
 		 list = new ListView<>();
 
 		ObservableList<String> items = FXCollections.observableArrayList();
-		items.add("Online Users:");
+		items.add("Everyone");
 //		ArrayList<String> users = Server.getUsers(); 
 //		for (String name : users) {
 //			if (!name.equals(this.name)){

@@ -116,14 +116,22 @@ public class Server extends Observable {
 					else if (message.contains("update")) {
 						String request = message.split(":")[2];
 						String sender = message.split(":")[1];
-						String fileName = sender + request + ".txt";
+						String fileName; 
+						if (request.equals("Everyone")) {
+							fileName = "Everyone.txt";
+							System.out.println("requested everyone");
+						}
+						else {
+							fileName = sender + request + ".txt";
+						}
+						
 						String line = null; 
 						String convo = ""; 
 						FileReader fileReader; 
 						File f = new File(fileName);
 						f.createNewFile(); 
 						fileReader = new FileReader(fileName);
-						System.out.println("reading from: " + sender + request );
+						System.out.println("reading from: " + fileName );
 						BufferedReader bufferedReader =  new BufferedReader(fileReader);
 						while((line = bufferedReader.readLine()) != null) {
 							message = "update::" + sender + "::" + request + "::" +  line;
@@ -149,13 +157,22 @@ public class Server extends Observable {
 						String receiver = parts[0];
 						System.out.println("parts " + Arrays.toString(parts));
 						String sender = parts[1].split(":")[0];
-						FileWriter fileWriter = new FileWriter(sender + receiver + ".txt", true);
-					    fileWriter.write(parts[1] + "\n");
-					    fileWriter.close();
-					    
-					    FileWriter fileWriter2 = new FileWriter(receiver + sender + ".txt", true);
-					    fileWriter2.write(parts[1] + "\n");
-					    fileWriter2.close();
+						
+						if (receiver.equals("Everyone")) {
+							FileWriter fileWriter = new FileWriter("Everyone.txt", true);
+						    fileWriter.write(parts[1] + "\n");
+						    fileWriter.close();
+						}
+						else {
+							FileWriter fileWriter = new FileWriter(sender + receiver + ".txt", true);
+						    fileWriter.write(parts[1] + "\n");
+						    fileWriter.close();
+						    
+						    FileWriter fileWriter2 = new FileWriter(receiver + sender + ".txt", true);
+						    fileWriter2.write(parts[1] + "\n");
+						    fileWriter2.close();
+							
+						}
 						
 						
 //						setChanged();

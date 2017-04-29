@@ -79,7 +79,7 @@ public class ClientMain extends Application {
 
 		userList = new HashMap<String, String>();
 		try {
-			Socket sock = new Socket("10.146.239.174", 4242); // 10.146.204.23
+			Socket sock = new Socket("127.0.0.1", 4242); // 10.146.204.23
 			writer = new PrintWriter(sock.getOutputStream());
 			InputStreamReader streamReader = new InputStreamReader(sock.getInputStream());
 			reader = new BufferedReader(streamReader);
@@ -160,7 +160,6 @@ public class ClientMain extends Application {
 				message = reader.readLine();
 				while (message != null) {
 					if (message.contains("1parseme1")) {
-						processed = true;
 						message = message.substring(12);
 						System.out.println("sub" + message);
 						String name = message.split(" ")[0];
@@ -242,7 +241,8 @@ public class ClientMain extends Application {
 									}
 								});
 
-							} else {
+							} 
+							else {
 								Platform.runLater(new Runnable() {
 									@Override
 									public void run() {
@@ -251,7 +251,8 @@ public class ClientMain extends Application {
 									}
 								});
 							}
-						} else {
+						} 
+						else {
 							Platform.runLater(new Runnable() {
 								@Override
 								public void run() {
