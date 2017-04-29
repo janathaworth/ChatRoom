@@ -75,11 +75,14 @@ public class Server extends Observable {
 						String fileName = "users.txt";
 						String line = null; 
 						Boolean pass = false; 
+						Boolean log = false; 
 						
 						if (message.contains("pass")) {
 							pass  = true; 
 						}
-						
+						if(message.contains("log")){
+							log = true;
+						}
 						try {
 				            FileReader fileReader = new FileReader(fileName);
 				            BufferedReader bufferedReader =  new BufferedReader(fileReader);
@@ -95,7 +98,11 @@ public class Server extends Observable {
 				            	}
 				               
 				            }
-				            if (pass) {
+				            if (log) {
+				            	setChanged();
+				            	notifyObservers("2parse2");
+				            }
+				            else if (pass) {
 				            	setChanged();
 				            	notifyObservers("1parse1");
 				            }

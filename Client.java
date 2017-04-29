@@ -71,7 +71,7 @@ public class Client  {
 	public Scene getScene() {
 		
 		try {
-			Socket sock = new Socket("10.146.224.142", 4242); //10.146.204.23
+			Socket sock = new Socket("10.146.239.174", 4242); //10.146.204.23
 			writer = new PrintWriter(sock.getOutputStream());
 			InputStreamReader streamReader = new InputStreamReader(sock.getInputStream());
 			reader = new BufferedReader(streamReader);
