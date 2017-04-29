@@ -282,6 +282,9 @@ public class Client  {
 //						        t.setText( parts[i].split("tmstp")[1]+ "\n");
 //						        ta.appendText(t.toString());
 							}
+							if(receiver.equals("Everyone") && !name.equals(sender) && lastClick.equals("Everyone")) {
+								ta.appendText(parts[i].split("tmstp")[0] + "\n");
+							}
 							//System.out.println(Arrays.toString(parts));
 						}
 						else if (message.contains("update")) {
