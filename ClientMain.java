@@ -167,7 +167,44 @@ public class ClientMain extends Application {
 					System.out.println("clicked");
 					writer.println("userspass reg");
 					writer.flush();
+					
+					while(waiting) {
+						
+					}
 
+					if (userList.containsKey(name2.getText())) {
+						
+								incorrect2.setText("Username already taken!");
+								incorrect2.setTextFill(Color.rgb(210, 39, 30));
+	
+					}
+
+					else if (name2.getText().equals("") || name2.getText().contains(" ")
+							|| name2.getText().contains("~") || name2.getText().equals("Everyone")) {
+						
+								incorrect2.setText("Invalid Username");
+								incorrect2.setTextFill(Color.rgb(210, 39, 30));
+		
+
+					} else if (pw2.getText().equals("") || pw2.getText().contains(" ")) {
+						
+								incorrect2.setText("Invalid Password");
+								incorrect2.setTextFill(Color.rgb(210, 39, 30));
+							
+					} else if (!pw2.getText().equals(pw3.getText())) {
+						
+								incorrect2.setText("Passwords do not match. Please try again.");
+								incorrect2.setTextFill(Color.rgb(210, 39, 30));
+							
+
+					} else {
+						
+								incorrect2.setText("");
+								Client client = new Client(name2.getText(), primaryStage);
+								client.writer.println("*" + name2.getText());
+								client.writer.flush();
+
+					}
 				}
 			};
 
@@ -202,56 +239,57 @@ public class ClientMain extends Application {
 
 					}
 					if (message.contains("1parse1")) {
-						if (userList.containsKey(name2.getText())) {
-							Platform.runLater(new Runnable() {
-								@Override
-								public void run() {
-									incorrect2.setText("Username already taken!");
-									incorrect2.setTextFill(Color.rgb(210, 39, 30));
-								}
-							});
-						}
-
-						else if (name2.getText().equals("") || name2.getText().contains(" ")
-								|| name2.getText().contains("~") || name2.getText().equals("Everyone")) {
-							Platform.runLater(new Runnable() {
-								@Override
-								public void run() {
-									incorrect2.setText("Invalid Username");
-									incorrect2.setTextFill(Color.rgb(210, 39, 30));
-								}
-							});
-
-						} else if (pw2.getText().equals("") || pw2.getText().contains(" ")) {
-							Platform.runLater(new Runnable() {
-								@Override
-								public void run() {
-									incorrect2.setText("Invalid Password");
-									incorrect2.setTextFill(Color.rgb(210, 39, 30));
-								}
-							});
-
-						} else if (!pw2.getText().equals(pw3.getText())) {
-							Platform.runLater(new Runnable() {
-								@Override
-								public void run() {
-									incorrect2.setText("Passwords do not match. Please try again.");
-									incorrect2.setTextFill(Color.rgb(210, 39, 30));
-								}
-							});
-
-						} else {
-							Platform.runLater(new Runnable() {
-								@Override
-								public void run() {
-									incorrect2.setText("");
-									Client client = new Client(name2.getText(), primaryStage);
-									client.writer.println("*" + name2.getText());
-									client.writer.flush();
-								}
-							});
-
-						}
+						waiting = false; 
+//						if (userList.containsKey(name2.getText())) {
+//							Platform.runLater(new Runnable() {
+//								@Override
+//								public void run() {
+//									incorrect2.setText("Username already taken!");
+//									incorrect2.setTextFill(Color.rgb(210, 39, 30));
+//								}
+//							});
+//						}
+//
+//						else if (name2.getText().equals("") || name2.getText().contains(" ")
+//								|| name2.getText().contains("~") || name2.getText().equals("Everyone")) {
+//							Platform.runLater(new Runnable() {
+//								@Override
+//								public void run() {
+//									incorrect2.setText("Invalid Username");
+//									incorrect2.setTextFill(Color.rgb(210, 39, 30));
+//								}
+//							});
+//
+//						} else if (pw2.getText().equals("") || pw2.getText().contains(" ")) {
+//							Platform.runLater(new Runnable() {
+//								@Override
+//								public void run() {
+//									incorrect2.setText("Invalid Password");
+//									incorrect2.setTextFill(Color.rgb(210, 39, 30));
+//								}
+//							});
+//
+//						} else if (!pw2.getText().equals(pw3.getText())) {
+//							Platform.runLater(new Runnable() {
+//								@Override
+//								public void run() {
+//									incorrect2.setText("Passwords do not match. Please try again.");
+//									incorrect2.setTextFill(Color.rgb(210, 39, 30));
+//								}
+//							});
+//
+//						} else {
+//							Platform.runLater(new Runnable() {
+//								@Override
+//								public void run() {
+//									incorrect2.setText("");
+//									Client client = new Client(name2.getText(), primaryStage);
+//									client.writer.println("*" + name2.getText());
+//									client.writer.flush();
+//								}
+//							});
+//
+//						}
 					}
 					/* Log In Page */
 					// username exists
