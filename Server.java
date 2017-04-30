@@ -44,8 +44,8 @@ public class Server extends Observable {
 		try {
 	        FileWriter fileWriter = new FileWriter(fileName, true);
 	        String[] info = user.split(" ");
-	      fileWriter.write(info[0] + " " + info[1] + "\n");
-	       fileWriter.close();
+	        fileWriter.write(info[0] + " " + info[1] + "\n");
+	        fileWriter.close();
 	    }
 	    catch(IOException ex) {
 	   	 ex.printStackTrace();
@@ -149,10 +149,11 @@ public class Server extends Observable {
 						setChanged();
 						notifyObservers(message);
 					}
-//					else if (message.contains("*")) {
-//						setChanged(); 
-//						notifyObservers(message);
-//					}
+					else if (message.contains("*")) {
+						message = message.substring(1);
+						setChanged(); 
+						notifyObservers("~parseme~" + message);
+					}
 					else  {
 						setChanged();
 						notifyObservers(message);

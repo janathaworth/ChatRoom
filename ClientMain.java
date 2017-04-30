@@ -36,7 +36,7 @@ public class ClientMain extends Application {
 	Label incorrect;
 	Label incorrect2;
 
-	Boolean processed;
+	Boolean waiting;
 
 	Map<String, String> userList;
 
@@ -53,6 +53,7 @@ public class ClientMain extends Application {
 
 	@Override
 	public void start(Stage primaryStage) throws Exception {
+		waiting = true; 
 		this.primaryStage = primaryStage;
 		VBox box = new VBox();
 		FlowPane user = new FlowPane();
@@ -79,7 +80,7 @@ public class ClientMain extends Application {
 
 		userList = new HashMap<String, String>();
 		try {
-			Socket sock = new Socket("10.146.224.142", 4242); // 10.146.204.23
+			Socket sock = new Socket("10.146.105.26", 4242); // 10.146.204.23
 			writer = new PrintWriter(sock.getOutputStream());
 			InputStreamReader streamReader = new InputStreamReader(sock.getInputStream());
 			reader = new BufferedReader(streamReader);
@@ -99,6 +100,33 @@ public class ClientMain extends Application {
 				// synchronized (Server.names) {
 				// name.clear();
 				// pw.clear();
+				
+				while (waiting) {
+					
+				}
+				
+				if (userList.containsKey(name.getText())) {
+					if (!(userList.get(name.getText()).equals(pw.getText()))) {
+	
+								incorrect.setText("Your password is incorrect!");
+								incorrect.setTextFill(Color.rgb(210, 39, 30));
+	
+
+					} 
+					else {
+								incorrect.setText("");
+//								writer.println("*" + name.getText());
+								Client client = new Client(name.getText(), primaryStage);
+								client.writer.println("~parseme~" + name.getText() + " " + pw.getText());
+								client.writer.flush();
+	
+					}
+				} 
+				else {
+							incorrect.setText("Incorrect Username!");
+							incorrect.setTextFill(Color.rgb(210, 39, 30));
+
+				}
 			}
 		};
 
@@ -218,7 +246,7 @@ public class ClientMain extends Application {
 								public void run() {
 									incorrect2.setText("");
 									Client client = new Client(name2.getText(), primaryStage);
-									client.writer.println("~parseme~" + name2.getText() + " " + pw2.getText());
+									client.writer.println("*" + name2.getText());
 									client.writer.flush();
 								}
 							});
@@ -231,40 +259,41 @@ public class ClientMain extends Application {
 					// password does not match //Server.names.get(name.getText()
 					// != pw.getText()
 					if (message.contains("2parse2")) {
-						if (userList.containsKey(name.getText())) {
-							if (!(userList.get(name.getText()).equals(pw.getText()))) {
-								Platform.runLater(new Runnable() {
-									@Override
-									public void run() {
-										incorrect.setText("Your password is incorrect!");
-										incorrect.setTextFill(Color.rgb(210, 39, 30));
-									}
-								});
-
-							} 
-							else {
-								Platform.runLater(new Runnable() {
-									@Override
-									public void run() {
-										incorrect.setText("");
-//										writer.println("*" + name.getText());
-										Client client = new Client(name.getText(), primaryStage);
-										client.writer.println("~parseme~" + name.getText() + " " + pw.getText());
-										client.writer.flush();
-									}
-								});
-							}
-						} 
-						else {
-							Platform.runLater(new Runnable() {
-								@Override
-								public void run() {
-									
-									incorrect.setText("Incorrect Username!");
-									incorrect.setTextFill(Color.rgb(210, 39, 30));
-								}
-							});
-						}
+						waiting = true; 
+//						if (userList.containsKey(name.getText())) {
+//							if (!(userList.get(name.getText()).equals(pw.getText()))) {
+//								Platform.runLater(new Runnable() {
+//									@Override
+//									public void run() {
+//										incorrect.setText("Your password is incorrect!");
+//										incorrect.setTextFill(Color.rgb(210, 39, 30));
+//									}
+//								});
+//
+//							} 
+//							else {
+//								Platform.runLater(new Runnable() {
+//									@Override
+//									public void run() {
+//										incorrect.setText("");
+////										writer.println("*" + name.getText());
+//										Client client = new Client(name.getText(), primaryStage);
+//										client.writer.println("~parseme~" + name.getText() + " " + pw.getText());
+//										client.writer.flush();
+//									}
+//								});
+//							}
+//						} 
+//						else {
+//							Platform.runLater(new Runnable() {
+//								@Override
+//								public void run() {
+//									
+//									incorrect.setText("Incorrect Username!");
+//									incorrect.setTextFill(Color.rgb(210, 39, 30));
+//								}
+//							});
+//						}
 					}
 					System.out.println("main received" + message);
 					message = reader.readLine();
