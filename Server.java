@@ -1,35 +1,21 @@
 package assignment7;
 
 import java.io.BufferedReader;
-import java.io.BufferedWriter;
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.io.PrintWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.Observable;
+import assignment7.ClientObserver;
 
 public class Server extends Observable {
 
 	public void setUp() throws IOException{
 		ServerSocket serverSocket = new ServerSocket(4242);
-		//comment out until while loop if want to keep users
-//		PrintWriter pw;
-//		try {
-//			pw = new PrintWriter("users.txt");
-//			pw.close();
-//		} catch (FileNotFoundException e1) {
-//			// TODO Auto-generated catch block
-//			e1.printStackTrace();
-//		}
 		while(true) {
 			Socket clientSocket = serverSocket.accept();
 			ClientObserver client = new ClientObserver(clientSocket.getOutputStream());
@@ -178,10 +164,6 @@ public class Server extends Observable {
 						    fileWriter2.close();
 							
 						}
-						
-						
-//						setChanged();
-//						notifyObservers(message);
 					}
 					System.out.println("recevied: " + message);
 					message = reader.readLine(); 
