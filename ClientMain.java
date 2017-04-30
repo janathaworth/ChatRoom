@@ -80,7 +80,7 @@ public class ClientMain extends Application {
 
 		userList = new HashMap<String, String>();
 		try {
-			Socket sock = new Socket("10.146.105.26", 4242); // 10.146.204.23
+			Socket sock = new Socket("10.146.239.174", 4242); // 10.146.204.23
 			writer = new PrintWriter(sock.getOutputStream());
 			InputStreamReader streamReader = new InputStreamReader(sock.getInputStream());
 			reader = new BufferedReader(streamReader);
@@ -201,7 +201,7 @@ public class ClientMain extends Application {
 						
 								incorrect2.setText("");
 								Client client = new Client(name2.getText(), primaryStage);
-								client.writer.println("~parseme~" + name.getText() + " " + pw.getText());
+								client.writer.println("~parseme~" + name2.getText() + " " + pw2.getText());
 								client.writer.flush();
 
 					}

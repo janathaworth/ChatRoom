@@ -82,7 +82,7 @@ public class Client  {
 	public Scene getScene() {
 		
 		try {
-			Socket sock = new Socket("10.146.105.26", 4242); //10.146.204.23
+			Socket sock = new Socket("10.146.239.174", 4242); //10.146.204.23
 			writer = new PrintWriter(sock.getOutputStream());
 			InputStreamReader streamReader = new InputStreamReader(sock.getInputStream());
 			reader = new BufferedReader(streamReader);
@@ -201,15 +201,16 @@ public class Client  {
 //					"https://www.soundjay.com/button/sounds/button-09.mp3");
 //		     aud.play();
 //			 aud.stop();
-			playSound();
 			// get the message from the text field
-			String message = tf.getText();
-			tf.clear();
-			
-			String timeStamp = new SimpleDateFormat("HH:mm:ss").format(Calendar.getInstance().getTime());
-			writer.println(name + ": " + message);
-			writer.println("                                       " + timeStamp);
-			writer.flush(); 
+						String message = tf.getText();
+						tf.clear();
+						// send the message to the server
+//						writer.println(name + ": " + message);
+//						writer.flush();
+						playSound();
+						String timeStamp = new SimpleDateFormat("HH:mm:ss").format(Calendar.getInstance().getTime());
+						writer.println(lastClick + "~" + name + ": " + message );
+						writer.flush(); 
 		});
 		
 		DropShadow sendShadow = new DropShadow();
@@ -270,7 +271,7 @@ public class Client  {
 								online.add(not);
 								Platform.runLater(new Runnable() {
 					                 @Override public void run() {
-					                	 list.getItems().add( not);
+					                	 list.getItems().add(not);
 					                 }
 								});
 							}
