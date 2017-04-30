@@ -39,8 +39,10 @@ public class Server extends Observable {
 	
 	public void newClient(String user) {
 		String fileName = "users.txt";
+		File f = new File(fileName);
 		try {
-	        FileWriter fileWriter = new FileWriter(fileName, true);
+	        f.createNewFile();
+			FileWriter fileWriter = new FileWriter(fileName, true);
 	        String[] info = user.split(" ");
 	        fileWriter.write(info[0] + " " + info[1] + "\n");
 	        fileWriter.close();
@@ -71,6 +73,7 @@ public class Server extends Observable {
 				while (message != null) {
 					if (message.contains("users")) {
 						String fileName = "users.txt";
+						File f = new File(fileName);
 						String line = null; 
 						Boolean pass = false; 
 						Boolean log = false; 
@@ -82,6 +85,7 @@ public class Server extends Observable {
 							log = true;
 						}
 						try {
+							f.createNewFile();
 				            FileReader fileReader = new FileReader(fileName);
 				            BufferedReader bufferedReader =  new BufferedReader(fileReader);
 				            
