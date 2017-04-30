@@ -117,7 +117,7 @@ public class ClientMain extends Application {
 								incorrect.setText("");
 //								writer.println("*" + name.getText());
 								Client client = new Client(name.getText(), primaryStage);
-								client.writer.println("~parseme~" + name.getText() + " " + pw.getText());
+								client.writer.println("*" + name.getText());
 								client.writer.flush();
 	
 					}
@@ -201,7 +201,7 @@ public class ClientMain extends Application {
 						
 								incorrect2.setText("");
 								Client client = new Client(name2.getText(), primaryStage);
-								client.writer.println("*" + name2.getText());
+								client.writer.println("~parseme~" + name.getText() + " " + pw.getText());
 								client.writer.flush();
 
 					}
@@ -240,6 +240,7 @@ public class ClientMain extends Application {
 					}
 					if (message.contains("1parse1")) {
 						waiting = false; 
+						System.out.println(waiting);
 //						if (userList.containsKey(name2.getText())) {
 //							Platform.runLater(new Runnable() {
 //								@Override
@@ -297,7 +298,7 @@ public class ClientMain extends Application {
 					// password does not match //Server.names.get(name.getText()
 					// != pw.getText()
 					if (message.contains("2parse2")) {
-						waiting = true; 
+						waiting = false; 
 //						if (userList.containsKey(name.getText())) {
 //							if (!(userList.get(name.getText()).equals(pw.getText()))) {
 //								Platform.runLater(new Runnable() {
